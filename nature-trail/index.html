@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cousin Camp Olympics — Wildlife &amp; Nature · Mott's Run Photo Safari</title>
+<style>
+  :root{
+    --gold:#d4af37; --gold-lt:#f3df9b; --silver:#aab2bd; --bronze:#cd7f32;
+    --teal:#0e7c86; --teal-lt:#1aa3a3; --teal-dk:#063b40;
+    --leaf:#2e8b57; --leaf-lt:#3cb371; --bark:#6b4a2b;
+    --ink:#10243f; --paper:#f3faf8;
+    --ring-blue:#0081c8; --ring-yellow:#fcb131; --ring-black:#000;
+    --ring-green:#00a651; --ring-red:#ee334e;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    color:var(--ink);min-height:100vh;overflow-x:hidden;
+    background:
+      radial-gradient(55% 45% at 0% 0%, rgba(20,83,45,.26), transparent 62%),
+      radial-gradient(55% 45% at 100% 0%, rgba(20,83,45,.26), transparent 62%),
+      radial-gradient(70% 55% at 100% 100%, rgba(14,90,70,.22), transparent 62%),
+      radial-gradient(70% 55% at 0% 100%, rgba(14,90,70,.22), transparent 62%),
+      repeating-linear-gradient(0deg, transparent 0 31px, rgba(14,124,134,.04) 31px 32px),
+      repeating-linear-gradient(90deg, transparent 0 31px, rgba(14,124,134,.04) 31px 32px),
+      linear-gradient(180deg,#bfe6d6 0%, #d6efe5 28%, var(--paper) 72%);
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important} }
+
+  /* ===== JUNGLE AMBIENCE ===== */
+  .jungle{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+  .jungle-back{z-index:0}
+  .jungle-front{z-index:55}
+
+  /* corner foliage clusters */
+  .foliage{position:fixed;pointer-events:none;font-size:5.4rem;opacity:.5;z-index:0;
+    filter:saturate(1.25) drop-shadow(0 4px 6px rgba(0,0,0,.12));
+    animation:foliageSway 6s ease-in-out infinite;transform-origin:center}
+  .foliage.tl{top:-20px;left:-16px}
+  .foliage.tr{top:-24px;right:-16px;animation-delay:-2s}
+  .foliage.bl{bottom:-24px;left:-18px;animation-delay:-3s}
+  .foliage.br{bottom:-20px;right:-16px;animation-delay:-1.4s}
+  @keyframes foliageSway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg)}}
+
+  /* hanging vines draping over the top */
+  .vine{position:fixed;top:-6px;z-index:56;pointer-events:none;text-align:center;line-height:.62;
+    animation:vineSway 5s ease-in-out infinite;transform-origin:top center}
+  .vine span{display:block;font-size:1.4rem;opacity:.62;
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.15))}
+  @keyframes vineSway{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
+
+  /* falling leaves */
+  .fl{position:absolute;top:-50px;will-change:transform;animation:fall linear forwards}
+  @keyframes fall{
+    0%{transform:translateY(-50px) translateX(0) rotate(0deg);opacity:0}
+    8%{opacity:1}
+    100%{transform:translateY(112vh) translateX(var(--drift,0)) rotate(var(--spin,360deg));opacity:.95}
+  }
+
+  /* flying bugs */
+  .bug{position:absolute;will-change:transform;animation:flyAcross linear forwards}
+  .bug.rev{animation-name:flyAcrossRev}
+  @keyframes flyAcross{from{transform:translateX(-70px)}to{transform:translateX(112vw)}}
+  @keyframes flyAcrossRev{from{transform:translateX(112vw)}to{transform:translateX(-70px)}}
+  .bug .b{display:inline-block;animation:bob 1.6s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(-9px) rotate(-8deg)}50%{transform:translateY(9px) rotate(8deg)}}
+
+  /* animals walking along the bottom */
+  .walker{position:fixed;bottom:6px;z-index:1;will-change:transform;animation:walk linear forwards}
+  .walker.flip{animation-name:walkRev}
+  @keyframes walk{from{transform:translateX(-130px)}to{transform:translateX(114vw)}}
+  @keyframes walkRev{from{transform:translateX(114vw)}to{transform:translateX(-130px)}}
+  .walker .w{display:inline-block;animation:waddle .5s ease-in-out infinite}
+  @keyframes waddle{
+    0%,100%{transform:scaleX(var(--face,1)) translateY(0) rotate(-3deg)}
+    50%{transform:scaleX(var(--face,1)) translateY(-6px) rotate(3deg)}
+  }
+
+  /* ===== HERO ===== */
+  .hero{position:relative;color:#fff;text-align:center;overflow:hidden;
+    padding:30px 16px 60px;
+    background:
+      radial-gradient(120% 90% at 12% 6%, rgba(60,179,113,.45) 0%, rgba(0,0,0,0) 55%),
+      radial-gradient(120% 110% at 90% 100%, rgba(26,163,163,.5) 0%, rgba(0,0,0,0) 60%),
+      linear-gradient(160deg,var(--teal-dk) 0%, var(--teal) 55%, var(--teal-lt) 100%);
+  }
+  .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);opacity:.4;
+    animation:drift 16s ease-in-out infinite}
+  .hero::before{width:340px;height:340px;background:#36d399;top:-120px;left:-90px}
+  .hero::after{width:300px;height:300px;background:#7be3d6;bottom:10px;right:-80px;animation-delay:-8s}
+  @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(36px,26px)}}
+
+  .hero-content{position:relative;z-index:3}
+  .rings{font-size:1.5rem;letter-spacing:-7px;margin-bottom:8px;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+  .back{position:absolute;top:14px;left:14px;z-index:5;color:#eafff7;text-decoration:none;
+    font-size:.8rem;font-weight:700;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);
+    padding:6px 13px;border-radius:30px;backdrop-filter:blur(4px)}
+  .back:hover{background:rgba(255,255,255,.26)}
+  .hero .icon{font-size:2.6rem;display:block;margin:2px 0 4px}
+  .hero h1{margin:0;font-size:2rem;letter-spacing:.5px;text-shadow:0 3px 14px rgba(0,0,0,.45);font-weight:800}
+  .hero .tag{display:inline-block;margin-top:9px;padding:5px 16px;border-radius:30px;
+    background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);
+    font-size:.8rem;letter-spacing:2px;text-transform:uppercase}
+  .hero .quip{margin:12px 0 0;font-size:.95rem;color:#d4fff2;font-style:italic}
+  .hero .where{margin:6px 0 0;font-size:.84rem;color:#bff3e8}
+
+  /* floating critters in hero */
+  .floaters{position:absolute;inset:0;z-index:1;pointer-events:none}
+  .floaters span{position:absolute;opacity:.55;animation:floaty 7s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-16px) rotate(6deg)}}
+
+  /* tree line */
+  .treeline{display:block;width:100%;height:60px;margin-bottom:-1px}
+
+  /* ===== MAIN ===== */
+  .wrap{max-width:920px;margin:0 auto;padding:20px 16px 90px;position:relative;z-index:2}
+
+  /* scoreboard */
+  .board{position:sticky;top:10px;z-index:20;margin:0 auto 22px;max-width:560px;
+    background:linear-gradient(120deg,#fff,#eefaf6);border:1px solid #cfe9e1;
+    border-radius:18px;box-shadow:0 8px 26px rgba(14,124,134,.18);
+    padding:14px 18px;display:flex;align-items:center;gap:14px}
+  .board .cam{font-size:1.9rem;line-height:1;animation:sway 4s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+  .board .txt{flex:1;min-width:0}
+  .board .lbl{font-size:.66rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal)}
+  .board .score{font-size:1.5rem;font-weight:800;line-height:1.1;color:var(--ink)}
+  .board .score b{color:var(--teal-lt);font-size:2rem}
+  .board .reset{flex:0 0 auto;border:none;cursor:pointer;background:#eef3f1;color:#6c7d78;
+    font-size:.72rem;font-weight:700;padding:8px 12px;border-radius:30px}
+  .board .reset:hover{background:#e0eae7;color:#42514d}
+  .progress{height:8px;border-radius:6px;background:#dcebe6;overflow:hidden;margin-top:7px}
+  .progress i{display:block;height:100%;width:0;border-radius:6px;
+    background:linear-gradient(90deg,var(--leaf-lt),var(--teal-lt));transition:width .4s ease}
+
+  .medal-note{max-width:560px;margin:0 auto 26px;text-align:center;
+    background:linear-gradient(110deg,#fff8e6,#fdeec2);border:1px solid #f0dca0;
+    border-radius:14px;padding:10px 14px;font-size:.84rem;color:#6b5410;font-weight:600}
+  .medal-note .m{font-size:1.05rem}
+
+  .howto{max-width:560px;margin:0 auto 30px;text-align:center;color:#41635c;font-size:.86rem;line-height:1.5}
+
+  /* category section */
+  .cat{margin:0 0 26px}
+  .cat h2{display:flex;align-items:center;gap:10px;font-size:1.15rem;margin:0 0 12px;color:var(--teal-dk)}
+  .cat h2 .ci{font-size:1.4rem}
+  .cat h2 .ck{margin-left:auto;font-size:.74rem;font-weight:700;color:var(--teal);
+    background:#e3f3ee;border:1px solid #c8e7dd;padding:3px 10px;border-radius:30px}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+
+  .crit{position:relative;cursor:pointer;background:#fff;border:1.5px solid #e2ede9;
+    border-radius:14px;padding:12px 12px 11px;display:flex;align-items:center;gap:10px;
+    transition:transform .12s ease,box-shadow .18s ease,border-color .18s,background .18s;
+    box-shadow:0 3px 10px rgba(14,124,134,.07);user-select:none}
+  .crit:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(14,124,134,.16)}
+  .crit:active{transform:scale(.97)}
+  .crit .emo{font-size:1.7rem;line-height:1;flex:0 0 auto;transition:transform .2s}
+  .crit .nm{font-size:.86rem;font-weight:600;line-height:1.15;color:#27413a}
+  .crit .hint{display:block;font-size:.68rem;font-weight:500;color:#8aa39b;margin-top:1px}
+  .crit .tick{position:absolute;top:7px;right:8px;width:20px;height:20px;border-radius:50%;
+    border:2px solid #d3e3dd;display:flex;align-items:center;justify-content:center;
+    font-size:.7rem;color:transparent;transition:.2s;background:#fff}
+
+  .crit.got{background:linear-gradient(120deg,#eafaf3,#dff5ec);border-color:var(--leaf-lt)}
+  .crit.got .tick{background:var(--leaf);border-color:var(--leaf);color:#fff}
+  .crit.got .emo{transform:scale(1.12)}
+  .crit.got .nm{color:var(--teal-dk)}
+
+  /* camera flash on capture */
+  .crit.flash::after{content:"";position:absolute;inset:0;border-radius:14px;
+    background:#fff;animation:flash .45s ease-out forwards;pointer-events:none}
+  @keyframes flash{0%{opacity:.9}100%{opacity:0}}
+
+  /* wildcard input cards */
+  .crit.wild{border-style:dashed;background:#f6fbf9}
+  .crit.wild input{border:none;background:transparent;font-family:inherit;font-size:.86rem;
+    font-weight:600;color:#27413a;width:100%;outline:none}
+  .crit.wild input::placeholder{color:#9fb6ae;font-weight:500}
+  .crit.wild.got{border-style:solid}
+
+  /* celebration banner */
+  .cheer{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(90px);
+    background:linear-gradient(110deg,var(--leaf),var(--teal-lt));color:#fff;padding:13px 22px;
+    border-radius:30px;font-size:.9rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.25);
+    opacity:0;transition:.35s;z-index:60;pointer-events:none;text-align:center}
+  .cheer.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  footer{text-align:center;color:#6f8a83;font-size:.76rem;padding:10px 16px 30px;line-height:1.6}
+  footer .rings-mini{font-size:1rem;letter-spacing:-5px;display:block;margin-bottom:8px;opacity:.8}
+
+  @media(max-width:560px){
+    .hero h1{font-size:1.7rem}
+    .board .score b{font-size:1.7rem}
+    .cards{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  }
+</style>
+</head>
+<body>
+
+<div class="jungle jungle-back" aria-hidden="true"></div>
+<div class="jungle jungle-front" aria-hidden="true"></div>
+<div class="foliage tl" aria-hidden="true">🌴</div>
+<div class="foliage tr" aria-hidden="true">🌿</div>
+<div class="foliage bl" aria-hidden="true">🌾</div>
+<div class="foliage br" aria-hidden="true">🌴</div>
+<div class="vine" style="left:22%" aria-hidden="true">🍃<span>🌿</span><span>🍃</span><span>🍂</span></div>
+<div class="vine" style="left:46%;animation-delay:-1.5s" aria-hidden="true">🌿<span>🍃</span><span>🍃</span></div>
+<div class="vine" style="left:68%;animation-delay:-2.6s" aria-hidden="true">🍃<span>🍂</span><span>🌿</span><span>🍃</span></div>
+<div class="vine" style="left:88%;animation-delay:-3.4s" aria-hidden="true">🌿<span>🍃</span></div>
+
+<header class="hero">
+  <a class="back" href="../index.html">← All Days</a>
+  <div class="floaters">
+    <span style="top:18%;left:10%;font-size:1.6rem;animation-delay:-1s">🦋</span>
+    <span style="top:60%;left:18%;font-size:1.3rem;animation-delay:-3s">🍃</span>
+    <span style="top:24%;right:12%;font-size:1.5rem;animation-delay:-2s">🐝</span>
+    <span style="top:64%;right:16%;font-size:1.4rem;animation-delay:-4s">🦋</span>
+  </div>
+  <div class="hero-content">
+    <span class="icon">🦌</span>
+    <h1>Wildlife &amp; Nature Day</h1>
+    <div class="tag">Photo Safari · Wed, Jun 17</div>
+    <p class="quip">"Dang nature, you scary."</p>
+    <p class="where">📍 Hidden Creek Trail · Mott's Run Reservoir, Fredericksburg VA</p>
+  </div>
+  <svg class="treeline" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#063b40" opacity=".55" d="M0,60 L0,40 Q60,18 120,34 T240,30 T360,36 T480,26 T600,34 T720,28 T840,36 T960,26 T1080,34 T1200,30 L1200,60 Z"/>
+  </svg>
+</header>
+
+<main class="wrap">
+
+  <div class="board">
+    <div class="cam">📸</div>
+    <div class="txt">
+      <div class="lbl">Animals Snapped</div>
+      <div class="score"><b id="count">0</b> <span id="total">/ 0</span></div>
+      <div class="progress"><i id="bar"></i></div>
+    </div>
+    <button class="reset" id="reset">Reset</button>
+  </div>
+
+  <div class="medal-note">
+    <span class="m">🏅</span> Today's Gold goes to whoever photographs the <b>most different animals</b>. Tap a card the moment you get the shot!
+  </div>
+
+  <p class="howto">Spot it, snap it, tap it. Each critter you photograph turns green and adds to your count. Birds count by <b>sight or sound</b>. See something not on the list? Use a ✏️ wildcard card.</p>
+
+  <div id="board"></div>
+
+</main>
+
+<footer>
+  <span class="rings-mini">🥇 🥈 🥉</span>
+  Cousin Camp 2026 · Wildlife &amp; Nature Day · Stay on the trail, leave no trace 🍃<br>
+  Bird checklist from the Mott's Run Reservoir Trail Guide.
+</footer>
+
+<div class="cheer" id="cheer"></div>
+
+<script>
+/* ===== CRITTER DATA ===== */
+const CATS = [
+  {
+    name:"Mammals", icon:"🦌",
+    items:[
+      {e:"🦌", n:"White-tailed deer"},
+      {e:"🦫", n:"Beaver", h:"check for stick lodges"},
+      {e:"🦝", n:"Raccoon"},
+      {e:"🐿️", n:"Gray squirrel"},
+      {e:"🐿️", n:"Eastern chipmunk"},
+      {e:"🐰", n:"Cottontail rabbit"},
+      {e:"🦊", n:"Red or gray fox"},
+      {e:"🦦", n:"River otter", h:"near the water"},
+      {e:"🐀", n:"Muskrat", h:"in the reservoir"},
+      {e:"🦨", n:"Striped skunk"},
+      {e:"🐹", n:"Groundhog"},
+      {e:"🐀", n:"Opossum"},
+      {e:"🦇", n:"Bat", h:"at dusk"}
+    ]
+  },
+  {
+    name:"Birds", icon:"🦅", note:"by sight or sound",
+    items:[
+      {e:"🦅", n:"Bald eagle"},
+      {e:"🐦", n:"Northern cardinal"},
+      {e:"🪿", n:"Canada goose"},
+      {e:"🦆", n:"Wood duck"},
+      {e:"🕊️", n:"Mourning dove"},
+      {e:"🐦", n:"Ruby-throated hummingbird"},
+      {e:"🐦‍⬛", n:"Great blue heron"},
+      {e:"🦅", n:"Black vulture"},
+      {e:"🦅", n:"Turkey vulture"},
+      {e:"🦅", n:"Osprey"},
+      {e:"🦅", n:"Red-tailed hawk"},
+      {e:"🐦", n:"Belted kingfisher"},
+      {e:"🪶", n:"Red-bellied woodpecker"},
+      {e:"🪶", n:"Downy woodpecker"},
+      {e:"🪶", n:"Pileated woodpecker"},
+      {e:"🐦", n:"Blue jay"},
+      {e:"🐦", n:"N. mockingbird"},
+      {e:"🦃", n:"Wild turkey"},
+      {e:"🦉", n:"Great horned owl", h:"listen at dusk"}
+    ]
+  },
+  {
+    name:"Reptiles", icon:"🐢",
+    items:[
+      {e:"🐢", n:"Eastern box turtle"},
+      {e:"🐢", n:"Painted turtle", h:"sunning on logs"},
+      {e:"🐢", n:"Snapping turtle"},
+      {e:"🐍", n:"Northern water snake"},
+      {e:"🐍", n:"Garter snake"},
+      {e:"🐍", n:"Black rat snake"},
+      {e:"🦎", n:"Five-lined skink"},
+      {e:"🦎", n:"Fence lizard"}
+    ]
+  },
+  {
+    name:"Amphibians", icon:"🐸",
+    items:[
+      {e:"🐸", n:"American bullfrog"},
+      {e:"🐸", n:"Green frog"},
+      {e:"🐸", n:"Pickerel frog"},
+      {e:"🐸", n:"Spring peeper", h:"tiny — listen!"},
+      {e:"🐸", n:"American toad"},
+      {e:"🦎", n:"Red-backed salamander", h:"under logs"},
+      {e:"🦎", n:"Eastern newt"}
+    ]
+  },
+  {
+    name:"Bugs & Critters", icon:"🦋",
+    items:[
+      {e:"🦋", n:"Tiger swallowtail", h:"VA state insect"},
+      {e:"🦋", n:"Monarch butterfly"},
+      {e:"🪰", n:"Dragonfly"},
+      {e:"✨", n:"Firefly", h:"after dark"},
+      {e:"🐝", n:"Bumblebee"},
+      {e:"🦗", n:"Praying mantis"},
+      {e:"🐌", n:"Snail or slug"},
+      {e:"🕷️", n:"Spider in a web"}
+    ]
+  },
+  {
+    name:"In the Water", icon:"🎣",
+    items:[
+      {e:"🐟", n:"Bluegill"},
+      {e:"🐟", n:"Largemouth bass"},
+      {e:"🦐", n:"Crayfish", h:"in the shallows"}
+    ]
+  },
+  {
+    name:"Pets & Pure Nonsense", icon:"🐶", note:"good luck",
+    items:[
+      {e:"🐕", n:"A dog on a leash", h:"actually likely!"},
+      {e:"🐈", n:"A cat who escaped"},
+      {e:"🐠", n:"Goldfish in a bowl"},
+      {e:"🐹", n:"Hamster on a tiny wheel"},
+      {e:"🦜", n:"Parrot saying hi"},
+      {e:"🪨", n:"Someone's pet rock"},
+      {e:"🦙", n:"A llama in pajamas"},
+      {e:"🦖", n:"T-rex on a leash"},
+      {e:"🦄", n:"A wild unicorn"},
+      {e:"🐉", n:"Geneva's dragon", h:"from Opening Day"},
+      {e:"🦣", n:"A confused woolly mammoth"},
+      {e:"👣", n:"Bigfoot", h:"blurry photo counts"}
+    ]
+  },
+  {
+    name:"Wildcards", icon:"✏️", note:"write in your own finds",
+    items:[
+      {e:"✏️", n:"", wild:true},
+      {e:"✏️", n:"", wild:true},
+      {e:"✏️", n:"", wild:true}
+    ]
+  }
+];
+
+/* ===== STATE (persists locally on this device while you're on the trail) ===== */
+const KEY = "cousincamp-naturesafari-v1";
+let saved = {};
+try{ saved = JSON.parse(localStorage.getItem(KEY) || "{}"); }catch(e){ saved = {}; }
+function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(e){} }
+
+/* ===== BUILD ===== */
+const boardEl = document.getElementById("board");
+let totalReal = 0;          // non-wildcard cards
+let idc = 0;
+
+CATS.forEach(cat=>{
+  const sec = document.createElement("section");
+  sec.className = "cat";
+  const h = document.createElement("h2");
+  h.innerHTML = `<span class="ci">${cat.icon}</span> ${cat.name}` +
+    (cat.note ? `<span class="ck">${cat.note}</span>` : "");
+  sec.appendChild(h);
+
+  const grid = document.createElement("div");
+  grid.className = "cards";
+
+  cat.items.forEach(it=>{
+    const id = "c"+(idc++);
+    const card = document.createElement("div");
+    card.className = "crit" + (it.wild ? " wild" : "");
+    card.dataset.id = id;
+    if(!it.wild) totalReal++;
+
+    if(it.wild){
+      card.innerHTML = `<span class="emo">${it.e}</span>
+        <input type="text" placeholder="Your find…" maxlength="22" value="${saved[id]&&saved[id].t?escapeAttr(saved[id].t):""}">
+        <span class="tick">✓</span>`;
+      const input = card.querySelector("input");
+      input.addEventListener("click", e=>e.stopPropagation());
+      input.addEventListener("input", ()=>{
+        const has = input.value.trim().length>0;
+        card.classList.toggle("got", has);
+        saved[id] = {t:input.value, got:has};
+        persist(); recount();
+      });
+      if(saved[id]&&saved[id].got) card.classList.add("got");
+    } else {
+      card.innerHTML = `<span class="emo">${it.e}</span>
+        <span class="nm">${it.n}${it.h?`<span class="hint">${it.h}</span>`:""}</span>
+        <span class="tick">✓</span>`;
+      if(saved[id]&&saved[id].got) card.classList.add("got");
+      card.addEventListener("click", ()=>{
+        const got = card.classList.toggle("got");
+        if(got){ card.classList.add("flash"); setTimeout(()=>card.classList.remove("flash"),460); }
+        saved[id] = {got};
+        persist(); recount(true);
+      });
+    }
+    grid.appendChild(card);
+  });
+  sec.appendChild(grid);
+  boardEl.appendChild(sec);
+});
+
+/* ===== COUNT ===== */
+const countEl=document.getElementById("count"), totalEl=document.getElementById("total"), barEl=document.getElementById("bar");
+const cheerEl=document.getElementById("cheer");
+totalEl.textContent = "/ "+totalReal;
+let lastN = -1;
+
+function recount(announce){
+  let n=0;
+  document.querySelectorAll(".crit.got").forEach(()=>n++);
+  countEl.textContent = n;
+  barEl.style.width = Math.min(100, (n/totalReal)*100) + "%";
+  if(announce && n>lastN){
+    const msgs = ["📸 Got one!","Nice shot! 🦌","Captured! 🌿","Another for the gallery! ✨","Great eye! 🔍"];
+    let m = msgs[n % msgs.length];
+    if(n===5) m="🖐️ Five animals — you're on a roll!";
+    if(n===10) m="🔟 Double digits! Medal contender!";
+    if(n===15) m="🏅 15 animals — incredible safari!";
+    if(n===totalReal) m="🏆 You found them ALL. Legendary!";
+    cheer(m);
+  }
+  lastN = n;
+}
+
+let cheerT;
+function cheer(msg){
+  cheerEl.textContent=msg; cheerEl.classList.add("show");
+  clearTimeout(cheerT); cheerT=setTimeout(()=>cheerEl.classList.remove("show"),2200);
+}
+
+function escapeAttr(s){ return String(s).replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+
+/* ===== RESET ===== */
+document.getElementById("reset").addEventListener("click", ()=>{
+  if(!confirm("Clear all your photo check-offs and start fresh?")) return;
+  saved = {}; persist();
+  document.querySelectorAll(".crit").forEach(c=>{
+    c.classList.remove("got");
+    const i=c.querySelector("input"); if(i) i.value="";
+  });
+  lastN=-1; recount();
+});
+
+recount();
+
+/* ===== JUNGLE AMBIENCE ENGINE ===== */
+(function(){
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const back=document.querySelector(".jungle-back");
+  const front=document.querySelector(".jungle-front");
+  const LEAVES=["🍃","🍂","🌿","🍁","🍃"];
+  const BUGS=["🦋","🐝","🪰","🐞","🦟","🐛","✨"];
+  const WALKERS=["🦌","🦊","🦝","🐿️","🐇","🦫","🦃","🐢","🐸","🦔"];
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+  function leaf(){
+    const el=document.createElement("div");
+    el.className="fl"; el.textContent=pick(LEAVES);
+    const size=rnd(.9,2.2);
+    el.style.left=rnd(-2,100)+"vw";
+    el.style.fontSize=size.toFixed(2)+"rem";
+    el.style.opacity=rnd(.5,.95).toFixed(2);
+    el.style.setProperty("--drift",rnd(-140,140).toFixed(0)+"px");
+    el.style.setProperty("--spin",rnd(-720,720).toFixed(0)+"deg");
+    const dur=rnd(7,15); el.style.animationDuration=dur.toFixed(1)+"s";
+    (size>1.6?front:back).appendChild(el);
+    setTimeout(()=>el.remove(),dur*1000+250);
+  }
+  function bug(){
+    const el=document.createElement("div");
+    const rev=Math.random()<.5;
+    el.className="bug"+(rev?" rev":"");
+    const inner=document.createElement("span");
+    inner.className="b"; inner.textContent=pick(BUGS);
+    if(rev) inner.style.transform="scaleX(-1)";
+    el.appendChild(inner);
+    const size=rnd(.9,1.9);
+    el.style.top=rnd(4,92)+"vh";
+    el.style.fontSize=size.toFixed(2)+"rem";
+    el.style.opacity=rnd(.6,1).toFixed(2);
+    const dur=rnd(6,13); el.style.animationDuration=dur.toFixed(1)+"s";
+    inner.style.animationDuration=rnd(1,2.2).toFixed(2)+"s";
+    (size>1.3?front:back).appendChild(el);
+    setTimeout(()=>el.remove(),dur*1000+250);
+  }
+  function walker(){
+    const el=document.createElement("div");
+    const rev=Math.random()<.5;
+    el.className="walker"+(rev?" flip":"");
+    const inner=document.createElement("span");
+    inner.className="w"; inner.textContent=pick(WALKERS);
+    if(rev) inner.style.setProperty("--face","-1");
+    inner.style.fontSize=rnd(1.8,3).toFixed(2)+"rem";
+    inner.style.animationDuration=rnd(.36,.6).toFixed(2)+"s";
+    el.appendChild(inner);
+    el.style.bottom=rnd(2,16).toFixed(0)+"px";
+    const dur=rnd(10,18); el.style.animationDuration=dur.toFixed(1)+"s";
+    back.appendChild(el);
+    setTimeout(()=>el.remove(),dur*1000+250);
+  }
+
+  for(let i=0;i<12;i++) setTimeout(leaf,i*250);
+  for(let i=0;i<6;i++) setTimeout(bug,i*500);
+  setTimeout(walker,1200); setTimeout(walker,5000);
+  setInterval(leaf,620);
+  setInterval(bug,1300);
+  setInterval(walker,4200);
+})();
+</script>
+</body>
+</html>

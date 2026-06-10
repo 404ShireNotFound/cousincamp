@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Street, U.S.A. Build — Cousin Camp Olympics</title>
+<style>
+  :root{--gold:#d4af37;--blue:#0b5394;--red:#c1272d;--ink:#10243f}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;min-height:100vh;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px 16px;position:relative;overflow-x:hidden;
+    background:linear-gradient(135deg,#a81d23,#e23b46 55%,#c1272d)}
+  /* LEGO studs texture */
+  body::before{content:"";position:fixed;inset:0;opacity:.14;pointer-events:none;
+    background:radial-gradient(circle at 16px 16px,#fff 5px,transparent 6px);background-size:40px 40px}
+
+  .home{position:fixed;top:14px;left:14px;z-index:30;color:#fff;text-decoration:none;
+    font-size:.84rem;font-weight:700;background:rgba(0,0,0,.22);
+    border:1px solid rgba(255,255,255,.4);padding:6px 14px;border-radius:30px;
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+  .home:hover{background:rgba(0,0,0,.36)}
+
+  .rings{font-size:1.3rem;letter-spacing:-5px;margin-bottom:14px;position:relative}
+  h1{margin:0 0 6px;font-size:1.7rem;text-align:center;text-shadow:0 3px 14px rgba(0,0,0,.35)}
+  .sub{margin:0 0 26px;font-size:.95rem;opacity:.92;text-align:center}
+
+  .card{position:relative;background:#fff;color:var(--ink);border-radius:22px;
+    max-width:380px;width:100%;padding:30px 26px;text-align:center;
+    box-shadow:0 18px 46px rgba(0,0,0,.3);text-decoration:none;display:block;
+    transition:transform .18s,box-shadow .18s;border:3px solid transparent}
+  .card:hover{transform:translateY(-5px);box-shadow:0 26px 60px rgba(0,0,0,.38);border-color:var(--gold)}
+  .card .castle{font-size:3.4rem;display:block;line-height:1}
+  .card h2{margin:14px 0 4px;font-size:1.4rem;color:var(--red)}
+  .card .set{font-size:.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    color:#7c8aa0;margin-bottom:18px}
+  .card .btn{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(110deg,var(--blue),#0d6bb8);
+    color:#fff;font-weight:700;font-size:.95rem;padding:13px 22px;border-radius:30px;
+    box-shadow:0 6px 18px rgba(11,83,147,.3)}
+  .card .btn .arrow{transition:transform .2s}
+  .card:hover .btn .arrow{transform:translateX(5px)}
+  .card small{display:block;margin-top:14px;color:#9aa7b8;font-size:.72rem}
+
+  footer{margin-top:26px;font-size:.74rem;opacity:.85;text-align:center}
+</style>
+</head>
+<body>
+  <a class="home" href="../index.html">← Camp Home</a>
+
+  <div class="rings">🥇 🥈 🥉</div>
+  <h1>🧱 The All-Week Build</h1>
+  <p class="sub">Disney Main Street, U.S.A. — built together, brick by brick</p>
+
+  <a class="card" href="https://www.lego.com/en-us/service/building-instructions/43302" target="_blank" rel="noopener">
+    <span class="castle">🏰</span>
+    <h2>Main Street, U.S.A.</h2>
+    <div class="set">LEGO Set 43302</div>
+    <span class="btn"><span>View Building Instructions</span><span class="arrow">→</span></span>
+    <small>Opens the official LEGO instructions on lego.com</small>
+  </a>
+
+  <footer>Let the Brick Games begin! 🏅</footer>
+</body>
+</html>

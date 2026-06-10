@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cousin Camp Olympics 2026 · Virginia & Washington DC</title>
+<style>
+  :root{
+    --gold:#d4af37; --gold-lt:#f3df9b; --silver:#aab2bd; --bronze:#cd7f32;
+    --blue:#0b5394; --blue-dk:#072744; --red:#c1272d; --green:#2e8b57;
+    --ink:#10243f; --paper:#f4f8fe; --cherry:#f4b8c8;
+    --ring-blue:#0081c8; --ring-yellow:#fcb131; --ring-black:#000;
+    --ring-green:#00a651; --ring-red:#ee334e;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    color:var(--ink);background:#eaf1fb;overflow-x:hidden;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;color:#fff;text-align:center;overflow:hidden;
+    padding:24px 16px 0;
+    background:linear-gradient(165deg,#0a2f5c 0%,#0b5394 48%,#0d6bb8 100%);
+  }
+  /* drifting aurora glows */
+  .hero::before,.hero::after{
+    content:"";position:absolute;border-radius:50%;filter:blur(60px);opacity:.4;
+    animation:drift 16s ease-in-out infinite;
+  }
+  .hero::before{width:380px;height:380px;background:#1f8fff;top:-120px;left:-90px}
+  .hero::after{width:320px;height:320px;background:#ffd86b;bottom:40px;right:-80px;animation-delay:-8s}
+  @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
+
+  .torch{position:relative;display:inline-block;width:84px;height:116px;margin:0 auto}
+  #flame{position:absolute;top:0;left:0;width:84px;height:84px;display:block;
+    filter:drop-shadow(0 0 14px rgba(255,140,30,.55))}
+  .torch-cup{position:absolute;left:50%;top:73px;transform:translateX(-50%);
+    width:31px;height:15px;background:linear-gradient(#f7e7a6,#c89f2c);
+    clip-path:polygon(0 0,100% 0,72% 100%,28% 100%);
+    box-shadow:0 2px 5px rgba(0,0,0,.35)}
+  .torch-stick{position:absolute;left:50%;top:87px;transform:translateX(-50%);
+    width:12px;height:30px;border-radius:0 0 5px 5px;
+    background:linear-gradient(90deg,#7e5f1b,#e7c75a 45%,#7e5f1b);
+    box-shadow:0 2px 6px rgba(0,0,0,.3)}
+
+  .rings{position:relative;height:64px;margin:2px auto 8px;width:114px}
+  .rings span{position:absolute;width:42px;height:42px;border:6px solid;border-radius:50%;
+    animation:ringIn .8s cubic-bezier(.2,1.3,.4,1) both}
+  .rings span:nth-child(1){border-color:var(--ring-blue);left:0;top:0;animation-delay:.05s}
+  .rings span:nth-child(2){border-color:var(--ring-black);left:36px;top:0;animation-delay:.15s}
+  .rings span:nth-child(3){border-color:var(--ring-red);left:72px;top:0;animation-delay:.25s}
+  .rings span:nth-child(4){border-color:var(--ring-yellow);left:18px;top:22px;animation-delay:.35s}
+  .rings span:nth-child(5){border-color:var(--ring-green);left:54px;top:22px;animation-delay:.45s}
+  @keyframes ringIn{from{opacity:0;transform:scale(.2) translateY(-30px)}to{opacity:1}}
+
+  .hero h1{margin:0;font-size:2.1rem;line-height:1.04;letter-spacing:.5px;
+    text-shadow:0 3px 18px rgba(0,0,0,.35);font-weight:800}
+  .hero .sub{margin:8px 0 0;font-size:.98rem;opacity:.95;font-weight:500}
+  .hero .dates{display:inline-block;margin:12px 0 2px;padding:6px 17px;border-radius:30px;
+    background:rgba(255,255,255,.14);backdrop-filter:blur(4px);font-size:.9rem;
+    font-weight:600;letter-spacing:.5px;border:1px solid rgba(255,255,255,.25)}
+
+  /* countdown */
+  .count{display:flex;justify-content:center;gap:10px;margin:14px auto 18px;flex-wrap:wrap}
+  .count .unit{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+    border-radius:14px;padding:10px 4px;min-width:66px;backdrop-filter:blur(4px)}
+  .count .n{font-size:1.7rem;font-weight:800;line-height:1;color:var(--gold-lt)}
+  .count .l{font-size:.62rem;text-transform:uppercase;letter-spacing:1.2px;opacity:.85;margin-top:5px}
+  .count.live .n{color:#fff}
+
+  /* DC / VA skyline */
+  .skyline{display:block;width:100%;height:96px;margin-top:2px}
+
+  /* ===== MAIN ===== */
+  .wrap{max-width:920px;margin:0 auto;padding:22px 16px 70px}
+  .section-label{text-align:center;font-size:.78rem;font-weight:700;letter-spacing:2.5px;
+    text-transform:uppercase;color:var(--blue);margin:0 0 4px}
+  .section-title{text-align:center;font-size:1.7rem;font-weight:800;margin:0 0 26px;color:var(--ink)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+
+  .day{position:relative;background:#fff;border-radius:20px;overflow:hidden;
+    box-shadow:0 6px 24px rgba(11,83,147,.12);border:1px solid #e6edf7;
+    display:flex;flex-direction:column;
+    opacity:0;transform:translateY(26px);transition:transform .5s ease,box-shadow .25s,opacity .5s ease}
+  .day.in{opacity:1;transform:none}
+  .day.clickable{cursor:pointer}
+  .day.clickable:hover{transform:translateY(-6px);box-shadow:0 16px 38px rgba(11,83,147,.22)}
+
+  .day .top{padding:16px 18px 14px;color:#fff;position:relative;overflow:hidden}
+  .day .top::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 85% -20%,rgba(255,255,255,.28),transparent 60%)}
+  .day .dow{font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.9}
+  .day .date{font-size:.72rem;font-weight:700;opacity:.9;margin-left:7px}
+  .day .date::before{content:"· ";opacity:.7}
+  .day .icon{font-size:2rem;display:block;margin:6px 0 2px}
+  .day .theme{font-size:1.32rem;font-weight:800;margin:0;line-height:1.1}
+  .day .tag{font-size:.82rem;font-style:italic;opacity:.92;margin:4px 0 0}
+
+  .day .body{padding:14px 18px 16px;flex:1;display:flex;flex-direction:column;gap:9px}
+  .day .line{display:flex;gap:9px;font-size:.86rem;line-height:1.35;color:#33455f}
+  .day .line .e{flex:0 0 18px;text-align:center}
+  .day .line b{color:var(--ink)}
+
+  .medal{margin-top:auto;display:flex;align-items:center;gap:8px;
+    background:linear-gradient(110deg,#fff8e6,#fdeec2);border:1px solid #f0dca0;
+    border-radius:12px;padding:9px 11px;font-size:.8rem;color:#6b5410;font-weight:600}
+  .medal .m{font-size:1.15rem;animation:spin 6s linear infinite;display:inline-block}
+  @keyframes spin{0%,82%{transform:rotateY(0)}90%{transform:rotateY(180deg)}100%{transform:rotateY(360deg)}}
+
+  .cta{display:flex;align-items:center;justify-content:space-between;
+    padding:11px 18px;font-size:.84rem;font-weight:700;letter-spacing:.3px}
+  .cta.live{background:linear-gradient(110deg,var(--blue),#0d6bb8);color:#fff}
+  .cta.soon{background:#eef2f8;color:#7c8aa0}
+  .cta .arrow{transition:transform .2s}
+  .day.clickable:hover .cta .arrow{transform:translateX(5px)}
+
+  .soon-banner{background:linear-gradient(90deg,#2d1b54,#4a2d80,#2d1b54);
+    color:#ecd9ff;text-align:center;font-weight:800;letter-spacing:2.5px;
+    text-transform:uppercase;font-size:.78rem;padding:9px 6px;
+    border-top:1px solid rgba(180,136,255,.25);border-bottom:1px solid rgba(180,136,255,.25);
+    animation:blinkbanner 1.3s ease-in-out infinite}
+  @keyframes blinkbanner{0%,100%{opacity:1;text-shadow:0 0 10px #b388ff,0 0 20px #7c4dff}
+    50%{opacity:.32;text-shadow:none}}
+
+  .badge{position:absolute;top:13px;right:-34px;transform:rotate(38deg);
+    background:var(--red);color:#fff;font-size:.62rem;font-weight:800;letter-spacing:1px;
+    padding:4px 40px;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:3}
+  .badge.live{background:linear-gradient(90deg,#10893e,#2bb673)}
+  .badge.live .heart{display:inline-block;color:#ff5277;animation:heartblink 1s steps(1) infinite}
+  @keyframes heartblink{0%,100%{opacity:1}50%{opacity:0}}
+
+  /* LEGO strip */
+  .lego{margin:34px 0 0;border-radius:20px;padding:20px 22px;color:#fff;position:relative;overflow:hidden;
+    background:linear-gradient(115deg,#c1272d,#e23b46);box-shadow:0 8px 26px rgba(193,39,45,.28);
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;text-decoration:none;cursor:pointer;
+    opacity:0;transform:translateY(26px);transition:transform .5s,opacity .5s,box-shadow .25s}
+  .lego.in{opacity:1;transform:none}
+  .lego:hover{box-shadow:0 16px 40px rgba(193,39,45,.42)}
+  .lego:hover.in{transform:translateY(-5px)}
+  .lego .lego-cta{position:relative;z-index:1;margin-left:auto;font-weight:800;font-size:.9rem;
+    letter-spacing:.3px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);
+    padding:9px 16px;border-radius:30px;white-space:nowrap;transition:background .2s}
+  .lego:hover .lego-cta{background:rgba(255,255,255,.28)}
+  .lego .studs{position:absolute;inset:0;opacity:.16;
+    background:radial-gradient(circle at 12px 12px,#fff 4px,transparent 5px);background-size:30px 30px}
+  .lego .big{font-size:2.6rem;position:relative}
+  .lego .txt{position:relative;flex:1;min-width:200px}
+  .lego h3{margin:0 0 3px;font-size:1.2rem;font-weight:800}
+  .lego p{margin:0;font-size:.88rem;opacity:.95;line-height:1.4}
+
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);
+    background:var(--ink);color:#fff;padding:12px 20px;border-radius:30px;font-size:.85rem;
+    font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;transition:.35s;z-index:50;pointer-events:none}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  footer{text-align:center;color:#7e8da2;font-size:.76rem;padding:28px 16px 40px;line-height:1.6}
+  footer .rings-mini{font-size:1rem;letter-spacing:-5px;display:block;margin-bottom:8px;opacity:.8}
+
+  @media(max-width:560px){
+    .hero h1{font-size:1.95rem}
+    .hero{padding-top:40px}
+    .count .unit{min-width:58px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="torch">
+    <canvas id="flame" width="100" height="122"></canvas>
+    <div class="torch-cup"></div>
+    <div class="torch-stick"></div>
+  </div>
+  <div class="rings"><span></span><span></span><span></span><span></span><span></span></div>
+  <h1>Cousin Camp: Olympic Edition</h1>
+  <p class="sub">Faster · Higher · Stronger — Together in Virginia &amp; Washington, DC</p>
+  <div class="dates">🗓️ June 14 – 20, 2026</div>
+
+  <div class="count" id="count">
+    <div class="unit"><div class="n" id="d">0</div><div class="l">Days</div></div>
+    <div class="unit"><div class="n" id="h">0</div><div class="l">Hours</div></div>
+    <div class="unit"><div class="n" id="m">0</div><div class="l">Minutes</div></div>
+    <div class="unit"><div class="n" id="s">0</div><div class="l">Seconds</div></div>
+  </div>
+
+  <svg class="skyline" viewBox="0 0 1200 130" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <g fill="#082341">
+      <!-- rolling Virginia hills -->
+      <path opacity=".5" d="M0,130 L0,96 Q150,66 320,90 T640,84 T960,92 T1200,80 L1200,130 Z"/>
+    </g>
+    <g fill="#061b33">
+      <!-- Capitol dome -->
+      <rect x="120" y="86" width="120" height="44"/>
+      <path d="M150,86 Q180,40 210,86 Z"/>
+      <rect x="176" y="34" width="8" height="12"/>
+      <circle cx="180" cy="32" r="4"/>
+      <!-- Washington Monument -->
+      <polygon points="430,130 446,18 462,130"/>
+      <!-- Jefferson Memorial dome -->
+      <rect x="560" y="92" width="90" height="38"/>
+      <path d="M575,92 Q605,58 635,92 Z"/>
+      <!-- generic government colonnade -->
+      <rect x="720" y="84" width="150" height="46"/>
+      <g fill="#082341"><rect x="730" y="90" width="6" height="40"/><rect x="748" y="90" width="6" height="40"/><rect x="766" y="90" width="6" height="40"/><rect x="784" y="90" width="6" height="40"/><rect x="802" y="90" width="6" height="40"/><rect x="820" y="90" width="6" height="40"/><rect x="838" y="90" width="6" height="40"/><rect x="856" y="90" width="6" height="40"/></g>
+      <!-- a couple of spires / steeples (Richmond/Fredericksburg) -->
+      <polygon points="960,130 974,60 988,130"/>
+      <rect x="1040" y="78" width="70" height="52"/>
+      <polygon points="1040,78 1075,52 1110,78"/>
+    </g>
+  </svg>
+</header>
+
+<main class="wrap">
+  <p class="section-label">The Daily Games</p>
+
+  <div class="grid" id="grid"></div>
+
+  <a class="lego" id="lego" href="main-street-build/index.html">
+    <div class="studs"></div>
+    <div class="big">🏰</div>
+    <div class="txt">
+      <h3>The All-Week Build: Disney Main Street, U.S.A.</h3>
+      <p>Brick by brick, the whole crew builds the LEGO Main Street set together all week long. Grand opening at the Closing Ceremony! 🧱</p>
+    </div>
+    <span class="lego-cta">Build instructions →</span>
+  </a>
+</main>
+
+<footer>
+  <span class="rings-mini">🥇 🥈 🥉</span>
+  Let the Games begin · Cousin Camp 2026 · Virginia &amp; Washington, DC<br>
+  Tap any day to enter its events. New sites light up as we build them!
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- DAY DATA ---------- */
+const PALETTE = {
+  blue:"linear-gradient(125deg,#0b5394,#0d6bb8)",
+  red:"linear-gradient(125deg,#c1272d,#e23b46)",
+  green:"linear-gradient(125deg,#2e8b57,#3cb371)",
+  purple:"linear-gradient(125deg,#5b3a8e,#8158c4)",
+  teal:"linear-gradient(125deg,#0e7c86,#1aa3a3)",
+  orange:"linear-gradient(125deg,#d9760f,#f0a23b)",
+  navy:"linear-gradient(125deg,#072744,#10395f)",
+  mystery:"linear-gradient(135deg,#140a2b,#2d1b54 55%,#160d33)"
+};
+
+const DAYS = [
+  {
+    dow:"Sunday", date:"Jun 14", icon:"🔥", color:"navy",
+    theme:"Opening Ceremony", tag:"Let the Games begin",
+    lines:[
+      {e:"🕡", t:"Lighting of the torch at <b>6:30</b>"},
+      {e:"🎉", t:"Welcome to Cousin Camp — meet the team!"},
+      {e:"🧱", t:"<b>Main Street, U.S.A. build</b> opens — first bricks laid, let the Brick Games begin!"}
+    ],
+    medal:null,
+    link:"opening-ceremony/index.html"
+  },
+  {
+    dow:"Monday", date:"Jun 15", icon:"🔬", color:"blue",
+    theme:"Science Day", tag:"Pocket protectors rule the world",
+    lines:[
+      {e:"🚀", t:"<b>Udvar-Hazy</b> Air &amp; Space scavenger hunt (opens 10:00 AM)"},
+      {e:"🍜", t:"Lunch at Dolan Uyghur"},
+      {e:"🏊", t:"Afternoon at the pool"}
+    ],
+    medal:"Gold for the most scavenger items found",
+    link:"scavenger-hunt-june-15/index.html"
+  },
+  {
+    dow:"Tuesday", date:"Jun 16", icon:"🪶", color:"green",
+    theme:"G-Dubs Day", tag:"The hair, the teeth, the legend",
+    lines:[
+      {e:"🌾", t:"<b>George Washington's Ferry Farm</b> + trivia"},
+      {e:"🍗", t:"Lunch at B-Dubs"},
+      {e:"🏊", t:"Afternoon at the pool"}
+    ],
+    medal:"Gold for the top silly U.S. history trivia score",
+    link:"g-dubs-trivia.html"
+  },
+  {
+    dow:"Wednesday", date:"Jun 17", icon:"🦌", color:"teal",
+    theme:"Wildlife & Nature", tag:"Dang nature, you scary",
+    lines:[
+      {e:"📸", t:"Photo safari on <b>Hidden Creek Trail</b>, Mott's Run"},
+      {e:"🧺", t:"Trailside picnic lunch"},
+      {e:"🍣", t:"Sushi dinner"}
+    ],
+    medal:"Gold for photographing the most animals",
+    link:"nature-trail/index.html"
+  },
+  {
+    dow:"Thursday", date:"Jun 18", icon:"🔮", color:"mystery",
+    theme:"Mystery Day", tag:"Shhh… it's a secret 🤫",
+    lines:[
+      {e:"🕵️", t:"Plans shrouded in secrecy…"},
+      {e:"❓", t:"All will be revealed in time"}
+    ],
+    medal:"??? — to be revealed",
+    banner:"❓ Coming Soon ❓",
+    link:null
+  },
+  {
+    dow:"Friday", date:"Jun 19", icon:"👩‍🍳", color:"orange",
+    theme:"Chef's Challenge", tag:"The kids run the kitchen",
+    lines:[
+      {e:"📝", t:"Plan the menu &amp; shop for ingredients"},
+      {e:"🏊", t:"Afternoon at the pool"},
+      {e:"🍽️", t:"Cook &amp; serve dinner for the grown-ups"}
+    ],
+    medal:"Gold for the dinner that wows the judges",
+    link:"chef-challenge.html"
+  },
+  {
+    dow:"Saturday", date:"Jun 20", icon:"🏅", color:"red",
+    theme:"Closing Ceremony", tag:"Medals, memories, and farewells",
+    lines:[
+      {e:"🧱", t:"Grand reveal of the LEGO Main Street build"},
+      {e:"💃", t:"Interpretive Dance Competition"},
+      {e:"👋", t:"Caravan rolls home — until next year!"}
+    ],
+    medal:null,
+    link:"closing-ceremony.html"
+  }
+];
+
+/* ---------- RENDER ---------- */
+const grid = document.getElementById("grid");
+DAYS.forEach(d=>{
+  const live = !!d.link;
+  const el = document.createElement(live ? "a" : "div");
+  el.className = "day" + (live ? " clickable" : "");
+  if(live){ el.href = d.link; }
+  else { el.classList.add("clickable"); el.setAttribute("data-soon","1"); }
+  el.style.textDecoration="none"; el.style.color="inherit";
+
+  let badge;
+  if(live) badge = `<div class="badge live">LOVE <span class="heart">❤</span></div>`;
+  else if(d.banner) badge = "";
+  else badge = `<div class="badge">SOON</div>`;
+
+  el.innerHTML = `
+    ${badge}
+    <div class="top" style="background:${PALETTE[d.color]}">
+      <span class="dow">${d.dow}</span><span class="date">${d.date}</span>
+      <span class="icon">${d.icon}</span>
+      <p class="theme">${d.theme}</p>
+      <p class="tag">${d.tag}</p>
+    </div>
+    ${d.banner ? `<div class="soon-banner">${d.banner}</div>` : ""}
+    <div class="body">
+      ${d.lines.map(l=>`<div class="line"><span class="e">${l.e}</span><span>${l.t}</span></div>`).join("")}
+      ${d.medal ? `<div class="medal"><span class="m">🏅</span><span>${d.medal}</span></div>` : ""}
+    </div>
+    <div class="cta ${live?'live':'soon'}">
+      <span>${live ? "Enter the events" : "Site coming soon"}</span>
+      <span class="arrow">${live ? "→" : "🔒"}</span>
+    </div>`;
+
+  if(!live){
+    el.addEventListener("click", e=>{ e.preventDefault(); toast(`${d.theme}'s site is still being built — check back soon! 🏗️`); });
+  }
+  grid.appendChild(el);
+});
+
+/* ---------- SCROLL REVEAL ---------- */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target);} });
+},{threshold:.15});
+document.querySelectorAll(".day,.lego").forEach((el,i)=>{ el.style.transitionDelay=(i*60)+"ms"; io.observe(el); });
+
+/* ---------- COUNTDOWN ---------- */
+const START = new Date("2026-06-14T18:30:00");
+const cEl = document.getElementById("count");
+function tick(){
+  const now = new Date(), diff = START - now;
+  if(diff <= 0){
+    cEl.classList.add("live");
+    cEl.innerHTML = '<div class="unit" style="min-width:auto;padding:12px 22px"><div class="n">🔥 The Games are ON! 🔥</div></div>';
+    return;
+  }
+  const d=Math.floor(diff/864e5), h=Math.floor(diff%864e5/36e5),
+        m=Math.floor(diff%36e5/6e4), s=Math.floor(diff%6e4/1e3);
+  document.getElementById("d").textContent=d;
+  document.getElementById("h").textContent=String(h).padStart(2,"0");
+  document.getElementById("m").textContent=String(m).padStart(2,"0");
+  document.getElementById("s").textContent=String(s).padStart(2,"0");
+}
+tick(); setInterval(tick,1000);
+
+/* ---------- TOAST ---------- */
+let tT;
+const tEl = document.getElementById("toast");
+function toast(msg){
+  tEl.textContent=msg; tEl.classList.add("show");
+  clearTimeout(tT); tT=setTimeout(()=>tEl.classList.remove("show"),2800);
+}
+
+/* ---------- LIVE TORCH FLAME (canvas particle fire) ---------- */
+(function(){
+  const cv = document.getElementById("flame");
+  if(!cv) return;
+  const ctx = cv.getContext("2d");
+  let W, H, DPR;
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const r = cv.getBoundingClientRect();
+    W = cv.width  = Math.max(1, Math.round(r.width  * DPR));
+    H = cv.height = Math.max(1, Math.round(r.height * DPR));
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const parts = [];
+  let frame = 0;
+
+  /* global colour "temperature" on a 0..2 axis:
+     0 = campfire orange, 1 = white-hot, 2 = blue-hot.
+     Random-walks toward fresh targets so it never repeats. */
+  let temp   = Math.random() * 2;
+  let target = Math.random() * 2;
+
+  function spawn(intensity){
+    const n = 3 + (Math.random() < intensity ? 2 : 0);
+    for(let i=0;i<n;i++){
+      parts.push({
+        x: W/2 + (Math.random()-0.5) * 9 * DPR,
+        y: H - 5 * DPR,
+        vx: (Math.random()-0.5) * 0.5 * DPR,
+        vy: -(1.0 + Math.random()*1.5) * DPR,
+        life: 0,
+        max: 26 + Math.random()*24,
+        r: (6 + Math.random()*7) * DPR
+      });
+    }
+  }
+
+  function lerp(x, y, f){ return x + (y - x) * f; }
+
+  // base RGB for a given temperature mode + particle life t (core -> tip)
+  function paletteRGB(mode, t){
+    if(mode === 0){                              // campfire orange
+      if(t < 0.16) return [255,251,228];
+      if(t < 0.42) return [255,208,86];
+      if(t < 0.70) return [255,112,28];
+      return [196,36,22];
+    }
+    if(mode === 1){                              // white-hot
+      if(t < 0.20) return [255,255,255];
+      if(t < 0.50) return [226,238,255];
+      if(t < 0.75) return [255,238,186];
+      return [186,158,128];
+    }
+    // mode 2: blue-hot
+    if(t < 0.18) return [236,248,255];
+    if(t < 0.45) return [120,200,255];
+    if(t < 0.72) return [44,120,255];
+    return [82,50,210];
+  }
+
+  // blend the two nearest palettes by the current global temperature
+  function flameColor(t, a){
+    const seg  = Math.min(Math.floor(temp), 1);  // 0 or 1
+    const frac = temp - seg;
+    const A = paletteRGB(seg, t), B = paletteRGB(seg + 1, t);
+    const r = Math.round(lerp(A[0], B[0], frac));
+    const g = Math.round(lerp(A[1], B[1], frac));
+    const b = Math.round(lerp(A[2], B[2], frac));
+    const aa = a * (t < 0.7 ? 1 : 0.78);
+    return "rgba(" + r + "," + g + "," + b + "," + aa + ")";
+  }
+
+  function draw(){
+    frame++;
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation = "lighter";
+
+    // slow, non-repeating colour drift: ease toward target + tiny jitter,
+    // then pick a new random target once we arrive
+    temp += (target - temp) * 0.004 + (Math.random() - 0.5) * 0.0025;
+    temp = Math.max(0, Math.min(2, temp));
+    if(Math.abs(target - temp) < 0.05) target = Math.random() * 2;
+
+    // organic flicker: layered sines drive sway + intensity
+    const sway = (Math.sin(frame*0.17) * 3 + Math.sin(frame*0.061) * 2.2) * DPR;
+    const intensity = 0.45 + 0.45 * Math.sin(frame*0.13) * Math.sin(frame*0.045);
+    spawn(intensity);
+
+    for(let i=parts.length-1;i>=0;i--){
+      const p = parts[i];
+      p.life++;
+      const t = p.life / p.max;
+      if(t >= 1){ parts.splice(i,1); continue; }
+
+      p.vy *= 0.985;                         // rise slows as it cools
+      p.x  += p.vx + sway * 0.045 * (1 - t); // base sway, stronger low down
+      p.y  += p.vy;
+      p.x  += (W/2 - p.x) * 0.022;           // converge to center -> teardrop tip
+
+      const rad = p.r * (1 - t*0.5);
+      const a   = (1 - t) * 0.55;
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, rad);
+      g.addColorStop(0, flameColor(t, a));
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, rad, 0, 6.2832);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

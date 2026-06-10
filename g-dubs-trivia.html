@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ye Grande Star-Spangled Trivia-Olympiad ★ G-Dubs Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Special+Elite&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#b22234; --reddark:#7d1620; --blue:#10204a; --blue2:#1d3a7a;
+    --gold:#d4af37; --goldbright:#f7d04a; --cream:#f7efd8; --ink:#2a1c0e;
+    --good:#1f7a45; --bad:#9c2a1c;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0; color:var(--ink);
+    font-family:"Special Elite","Courier New",monospace;
+    background:
+      repeating-linear-gradient(180deg, #b22234 0 38px, #f3e9cf 38px 76px);
+    min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:16px;
+  }
+  /* blue canton overlay vibe via fixed corner stars */
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:radial-gradient(circle at 50% -10%, rgba(16,32,74,.25), transparent 60%);
+  }
+  .wrap{width:100%; max-width:640px; position:relative; z-index:1;}
+  .parchment{
+    background:
+      radial-gradient(circle at 20% 10%, #fffdf3, transparent 40%),
+      radial-gradient(circle at 80% 90%, #efe2bf, transparent 45%),
+      #f7efd8;
+    border:5px solid var(--blue);
+    border-radius:8px;
+    box-shadow:0 0 0 4px var(--gold), 0 0 0 9px var(--red), 0 24px 60px rgba(0,0,0,.5);
+    padding:26px 22px 30px; position:relative;
+  }
+  .parchment::after{
+    content:""; position:absolute; inset:8px; border:2px dashed rgba(125,22,32,.35); border-radius:4px; pointer-events:none;
+  }
+  .eaglerow{text-align:center; font-size:40px; line-height:1; margin-bottom:2px; letter-spacing:6px;}
+  .stars{text-align:center; color:var(--blue); letter-spacing:8px; font-size:16px; margin:6px 0;}
+  h1{
+    font-family:"Pirata One","Playfair Display",serif; font-weight:400;
+    text-align:center; font-size:46px; line-height:.95; margin:6px 0 2px;
+    color:var(--red); text-shadow:2px 2px 0 var(--gold), 4px 4px 0 var(--blue);
+  }
+  h1 small{display:block; font-size:18px; color:var(--blue); letter-spacing:1px; text-shadow:none; font-family:"Special Elite",monospace; margin-top:8px;}
+  .proclaim{
+    font-family:"Playfair Display",serif; font-style:italic; text-align:center;
+    font-size:16px; line-height:1.5; color:var(--ink); margin:14px 8px 6px;
+  }
+  .ribbon{
+    display:block; text-align:center; margin:16px auto; max-width:90%;
+    background:var(--blue); color:var(--cream); padding:8px 14px; border-radius:4px;
+    border:2px solid var(--gold); font-size:13px; letter-spacing:2px; text-transform:uppercase;
+  }
+  button{font-family:inherit; cursor:pointer;}
+  .btn{
+    display:block; width:100%; margin-top:18px; padding:16px;
+    font-family:"Pirata One",serif; font-size:24px; letter-spacing:1px;
+    background:linear-gradient(180deg,var(--red),var(--reddark));
+    color:var(--cream); border:3px solid var(--gold); border-radius:10px;
+    box-shadow:0 6px 0 #5a0f17; transition:transform .05s, box-shadow .05s;
+    text-shadow:1px 1px 0 #5a0f17;
+  }
+  .btn:active{transform:translateY(4px); box-shadow:0 2px 0 #5a0f17;}
+  .btn.blue{background:linear-gradient(180deg,var(--blue2),var(--blue)); box-shadow:0 6px 0 #0a142e; border-color:var(--gold);}
+  .btn.blue:active{box-shadow:0 2px 0 #0a142e;}
+
+  /* GAME */
+  .topbar{display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--blue); margin-bottom:8px; font-weight:bold;}
+  .score-badge{
+    background:var(--blue); color:var(--goldbright); padding:4px 12px; border-radius:20px;
+    border:2px solid var(--gold); font-size:15px;
+  }
+  .flagbar{height:14px; border:2px solid var(--blue); border-radius:7px; overflow:hidden; margin-bottom:16px; background:#fff;}
+  .flagbar > div{height:100%; width:0; background:repeating-linear-gradient(90deg,var(--red) 0 14px,#fff 14px 28px); transition:width .4s;}
+  .qmeta{
+    text-align:center; font-family:"Playfair Display",serif; font-style:italic;
+    font-size:13px; color:var(--reddark); letter-spacing:1px; margin:6px 0 2px; text-transform:uppercase;
+  }
+  .question{
+    font-family:"Playfair Display",serif; font-weight:700; font-size:23px; line-height:1.35;
+    text-align:center; margin:8px 4px 20px; min-height:64px; color:var(--ink);
+  }
+  .opt{
+    display:flex; align-items:center; gap:12px; width:100%; text-align:left; margin:11px 0; padding:14px 15px;
+    background:#fffdf3; border:2.5px solid var(--blue); border-radius:10px; color:var(--ink); font-size:17px;
+    box-shadow:0 3px 0 rgba(16,32,74,.35); transition:.12s;
+  }
+  .opt .lt{
+    flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--blue); color:var(--cream);
+    display:flex; align-items:center; justify-content:center; font-family:"Pirata One",serif; font-size:18px;
+  }
+  .opt:active{transform:translateY(2px); box-shadow:0 1px 0 rgba(16,32,74,.35);}
+  .opt.correct{background:#dff4e3; border-color:var(--good); box-shadow:0 3px 0 #135a30;}
+  .opt.correct .lt{background:var(--good);}
+  .opt.wrong{background:#f7dcd6; border-color:var(--bad); box-shadow:0 3px 0 #6e1d12;}
+  .opt.wrong .lt{background:var(--bad);}
+  .opt.dim{opacity:.5;}
+  .opt:disabled{cursor:default;}
+  .feedback{margin:16px 0 4px; padding:15px; border-radius:8px; font-size:15px; line-height:1.5; display:none; border:2px solid;}
+  .feedback.show{display:block;}
+  .feedback.right{background:#dff4e3; border-color:var(--good);}
+  .feedback.wrongfb{background:#f7dcd6; border-color:var(--bad);}
+  .feedback .hdr{font-family:"Pirata One",serif; font-size:20px; display:block; margin-bottom:4px;}
+  .feedback.right .hdr{color:var(--good);}
+  .feedback.wrongfb .hdr{color:var(--bad);}
+
+  /* RESULTS */
+  .rank{
+    font-family:"Pirata One",serif; font-size:40px; text-align:center; color:var(--red);
+    text-shadow:2px 2px 0 var(--gold); line-height:1; margin:10px 8px;
+  }
+  .bigmedal{font-size:84px; text-align:center; line-height:1; margin:8px 0;}
+  .scoreline{text-align:center; font-size:20px; margin:10px 0; color:var(--blue); font-weight:bold;}
+  .blurb{font-family:"Playfair Display",serif; font-style:italic; text-align:center; font-size:16px; color:var(--ink); margin:10px 14px 4px; line-height:1.5;}
+
+  .hidden{display:none;}
+  .fw{position:fixed; width:8px; height:8px; border-radius:50%; z-index:60; pointer-events:none;}
+</style>
+</head>
+<body>
+<a href="index.html" style="position:fixed;top:12px;left:12px;z-index:50;color:#fff8e6;text-decoration:none;font-size:.84rem;font-weight:700;background:rgba(90,60,20,.78);border:1px solid rgba(255,240,200,.5);padding:6px 14px;border-radius:30px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);box-shadow:0 2px 8px rgba(0,0,0,.25)">← Camp Home</a>
+<div class="wrap">
+
+  <!-- START -->
+  <div id="start" class="parchment">
+    <div class="eaglerow">🦅 ⭐ 🦅</div>
+    <div class="stars">★ ★ ★ ★ ★ ★ ★</div>
+    <h1>Ye Grande<br>Trivia-Olympiad
+      <small>★ OF THESE UNITED & SILLY STATES ★</small>
+    </h1>
+    <p class="proclaim">Hear ye, hear ye! On this most glorious G-Dubs Day, We the People do solemnly gather to test thy knowledge of the strangest, goofiest, and most TRUE tales of American history.</p>
+    <p class="proclaim" style="font-size:14px;">Twenty-and-one questions await. Tap thy answer. Earn thy stars. Pursue the highest of high scores, and bask in the freedom of being RIGHT.</p>
+    <span class="ribbon">🎖 Warning: facts are 100% real and 100% ridiculous 🎖</span>
+    <button class="btn" onclick="startGame()">🔔 Ring Ye Liberty Bell &amp; Begin! 🔔</button>
+  </div>
+
+  <!-- GAME -->
+  <div id="game" class="parchment hidden">
+    <div class="topbar">
+      <span id="qcount">Decree 1 of 21</span>
+      <span class="score-badge" id="scorebadge">★ 0 stars</span>
+    </div>
+    <div class="flagbar"><div id="progress"></div></div>
+
+    <div class="qmeta" id="qmeta">Worth 2 stars</div>
+    <div class="question" id="question">?</div>
+    <div id="options"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button class="btn blue hidden" id="nextbtn" onclick="next()">Onward, Patriot! →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results" class="parchment hidden">
+    <div class="eaglerow">🦅 🎆 🦅</div>
+    <div class="bigmedal" id="bigmedal">🥇</div>
+    <div class="rank" id="rank">SUPREME EAGLE</div>
+    <div class="scoreline" id="scoreline"></div>
+    <p class="blurb" id="blurb"></p>
+    <span class="ribbon" id="factcount"></span>
+    <button class="btn" onclick="location.reload()">🦅 Form a More Perfect Re-Match 🔁</button>
+  </div>
+
+</div>
+
+<script>
+// ---- 21 SUPER-SILLY (AND TRUE!) QUESTIONS ----
+const QUESTIONS=[
+ {q:"President John Quincy Adams kept WHAT unusual pet in a White House bathroom?",
+  o:["A live alligator","A pet skunk","A talking crow","A baby shark"],a:0,pts:2,
+  f:"TRUE! A gift from the Marquis de Lafayette. He liked to startle guests with it."},
+
+ {q:"Andrew Jackson's pet parrot had to be removed from his FUNERAL because it kept doing what?",
+  o:["Swearing loudly","Singing opera","Biting the priest","Pooping on the casket"],a:0,pts:2,
+  f:"TRUE! Old Jackson taught the parrot, named Poll, to curse — and it would NOT stop, even at the funeral."},
+
+ {q:"Founding Father Benjamin Franklin wrote that he thought WHICH bird was more respectable than the bald eagle?",
+  o:["The turkey","The pigeon","The chicken","The penguin"],a:0,pts:2,
+  f:"TRUE! Franklin called the eagle a bird of 'bad moral character' and praised the turkey as 'a much more respectable bird.'"},
+
+ {q:"Spookily, both John Adams and Thomas Jefferson died on the EXACT same day. Which super-patriotic date?",
+  o:["July 4th, 1826","Christmas Day","George Washington's birthday","Halloween"],a:0,pts:3,
+  f:"TRUE & SPOOKY! Both died on July 4, 1826 — the 50th anniversary of the Declaration of Independence!"},
+
+ {q:"A giant 1,400-pound block of WHICH food once sat stinking up the White House for President Andrew Jackson?",
+  o:["Cheese","Fudge","Butter","Mashed potatoes"],a:0,pts:2,
+  f:"TRUE! A 1,400-lb wheel of cheese. He invited the public to eat it all in two hours. The smell lingered for months."},
+
+ {q:"To cheer up his sick brother, one of Teddy Roosevelt's kids brought a PONY where in the White House?",
+  o:["Up the elevator","Into the bathtub","Onto the roof","Into the Oval Office"],a:0,pts:2,
+  f:"TRUE! They snuck the pony Algonquin into the White House elevator to visit sick little Archie in bed."},
+
+ {q:"Legend says hefty President William Howard Taft once got famously stuck WHERE?",
+  o:["In a bathtub","In a chimney","In a revolving door","Under his desk"],a:0,pts:1,
+  f:"The classic tale! He had a giant custom tub installed — big enough for four normal men."},
+
+ {q:"On his midnight ride, did Paul Revere actually gallop around yelling 'The British are coming!'?",
+  o:["Nope — he kept it secret & quiet","Yes, super loudly","Yes, while juggling","Yes, on a unicycle"],a:0,pts:2,
+  f:"TRUE: It's a myth! He rode quietly to avoid British patrols — and back then, colonists still called themselves British!"},
+
+ {q:"Ben Franklin invented a musical instrument (played by Mozart!) made of spinning what?",
+  o:["Glass bowls","Soup cans","Banjos","Frying pans"],a:0,pts:3,
+  f:"TRUE! The 'glass armonica' — spinning glass bowls you touch with wet fingers. Mozart and Beethoven wrote music for it!"},
+
+ {q:"President Thomas Jefferson briefly kept TWO of which wild animal in cages on the White House lawn?",
+  o:["Grizzly bear cubs","Kangaroos","Tigers","Ostriches"],a:0,pts:2,
+  f:"TRUE! Explorer Zebulon Pike mailed him two grizzly cubs. Jefferson was NOT thrilled and gave them away."},
+
+ {q:"Before he was president, Abraham Lincoln was so good at WHICH sport that he's in its Hall of Fame?",
+  o:["Wrestling","Curling","Bowling","Synchronized swimming"],a:0,pts:2,
+  f:"TRUE! Honest Abe was a champion wrestler — reportedly losing only 1 of around 300 matches."},
+
+ {q:"Abraham Lincoln is the only U.S. president to hold an official license to do WHAT?",
+  o:["Run a tavern / sell drinks","Fly a hot air balloon","Captain a pirate ship","Train circus bears"],a:0,pts:2,
+  f:"TRUE! He co-owned a store licensed to sell liquor. The only president who was a licensed bartender!"},
+
+ {q:"The tune of our national anthem, 'The Star-Spangled Banner,' was originally a British WHAT?",
+  o:["Drinking song","Lullaby","Funeral march","Sea shanty about fish"],a:0,pts:3,
+  f:"TRUE! The melody came from 'To Anacreon in Heaven,' a club song that's surprisingly hard to sing — explains a lot!"},
+
+ {q:"When the British burned the White House in 1814, First Lady Dolley Madison heroically rescued WHAT?",
+  o:["A portrait of George Washington","The good silverware","The family dog","A pie"],a:0,pts:2,
+  f:"TRUE! She refused to flee until the giant Washington portrait was saved. Total hero."},
+
+ {q:"President Calvin Coolidge had a pet RACCOON named Rebecca. How did she nearly end up?",
+  o:["As Thanksgiving dinner","In the circus","Mayor of D.C.","On a postage stamp"],a:0,pts:2,
+  f:"TRUE! Rebecca was sent to be Thanksgiving dinner — but the Coolidges adopted her and walked her on a leash instead."},
+
+ {q:"At the Boston Tea Party, angry colonists dumped 342 chests of WHAT into the harbor?",
+  o:["Tea","Their homework","Bagpipes","Old socks"],a:0,pts:1,
+  f:"Tea, of course! A protest against British taxes. The harbor smelled like a giant cup of tea for days."},
+
+ {q:"The cartoon symbol 'Uncle Sam' was inspired by a real man named Samuel Wilson, who had what job?",
+  o:["A meat packer","A wizard","A pirate","A clown"],a:0,pts:2,
+  f:"TRUE! He stamped army meat barrels 'U.S.' during the War of 1812. Soldiers joked it stood for 'Uncle Sam.'"},
+
+ {q:"George Washington's famous false teeth were made of all of these EXCEPT...",
+  o:["Wood","Ivory","Gold","Real human & animal teeth"],a:0,pts:1,
+  f:"TRUE: NOT wood! That's a total myth. His dentures were ivory, metal, and actual teeth. Gross but true."},
+
+ {q:"The Liberty Bell, a giant symbol of freedom, is most famous for being...",
+  o:["Cracked","Made of cheese","Stolen by a goose","Invisible"],a:0,pts:1,
+  f:"Cracked! It famously broke and never rang properly again. America's most beloved broken object."},
+
+ {q:"Which of these did clever Benjamin Franklin REALLY invent?",
+  o:["Bifocal glasses","The microwave","The skateboard","Bubble gum"],a:0,pts:2,
+  f:"TRUE! Franklin invented bifocals, swim fins, the lightning rod, AND a heat-saving stove. Busy guy."},
+
+ {q:"⭐ GRAND FINALE ⭐ Teddy Roosevelt's family zoo at the White House included which of these REAL pets?",
+  o:["ALL of them!","A badger named Josiah","A one-legged rooster","A hyena named Bill"],a:0,pts:3,
+  f:"TRUE — ALL of them! Plus a small bear, guinea pigs, a pony, snakes, and a parrot. The White House was basically a zoo!"}
+];
+
+let qi=0, score=0, maxScore=0, locked=false;
+QUESTIONS.forEach(q=>maxScore+=q.pts);
+
+function startGame(){
+  qi=0; score=0; locked=false;
+  document.getElementById('start').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+  render();
+}
+
+function render(){
+  locked=false;
+  const Q=QUESTIONS[qi];
+  document.getElementById('qcount').textContent="Decree "+(qi+1)+" of 21";
+  document.getElementById('scorebadge').textContent="★ "+score+" star"+(score===1?"":"s");
+  document.getElementById('progress').style.width=(qi/21*100)+"%";
+  document.getElementById('qmeta').textContent="Worth "+Q.pts+" star"+(Q.pts>1?"s":"");
+  document.getElementById('question').textContent=Q.q;
+
+  const letters=["A","B","C","D"];
+  const ob=document.getElementById('options');
+  ob.innerHTML="";
+  Q.o.forEach((txt,i)=>{
+    const b=document.createElement('button');
+    b.className="opt";
+    b.innerHTML='<span class="lt">'+letters[i]+'</span><span>'+txt+'</span>';
+    b.onclick=()=>choose(i,b);
+    ob.appendChild(b);
+  });
+
+  const fb=document.getElementById('feedback');
+  fb.className="feedback"; fb.innerHTML="";
+  document.getElementById('nextbtn').classList.add('hidden');
+}
+
+function choose(i){
+  if(locked) return;
+  locked=true;
+  const Q=QUESTIONS[qi];
+  const opts=[...document.querySelectorAll('.opt')];
+  opts.forEach((o,idx)=>{
+    o.disabled=true;
+    if(idx===Q.a) o.classList.add('correct');
+    else if(idx===i) o.classList.add('wrong');
+    else o.classList.add('dim');
+  });
+  const fb=document.getElementById('feedback');
+  if(i===Q.a){
+    score+=Q.pts;
+    fb.className="feedback show right";
+    fb.innerHTML='<span class="hdr">🎉 Huzzah! +'+Q.pts+' star'+(Q.pts>1?"s":"")+'</span>'+Q.f;
+  } else {
+    fb.className="feedback show wrongfb";
+    fb.innerHTML='<span class="hdr">🪶 Fiddlesticks!</span>'+Q.f;
+  }
+  document.getElementById('scorebadge').textContent="★ "+score+" star"+(score===1?"":"s");
+  document.getElementById('nextbtn').classList.remove('hidden');
+  document.getElementById('nextbtn').textContent = (qi>=QUESTIONS.length-1) ? "See Ye Final Verdict! 🏆" : "Onward, Patriot! →";
+}
+
+function next(){
+  qi++;
+  if(qi>=QUESTIONS.length){ finish(); return; }
+  render();
+}
+
+function finish(){
+  document.getElementById('progress').style.width="100%";
+  document.getElementById('game').classList.add('hidden');
+  document.getElementById('results').classList.remove('hidden');
+
+  const pct=score/maxScore;
+  let medal,rank,blurb;
+  if(pct>=0.9){ medal="🦅"; rank="SUPREME BALD EAGLE OF LIBERTY"; blurb="You are a national treasure. Mount Rushmore is being re-carved as we speak."; }
+  else if(pct>=0.7){ medal="🥇"; rank="FOUNDING LEGEND"; blurb="Powdered wigs off to you! The Founders would be proud (and a little jealous)."; }
+  else if(pct>=0.5){ medal="🥈"; rank="RESPECTABLE COLONIST"; blurb="A fine and upstanding citizen of these silly states. Well played!"; }
+  else if(pct>=0.3){ medal="🦃"; rank="FRANKLIN'S HONORABLE TURKEY"; blurb="Ben Franklin would be delighted — the turkey is a noble bird, after all."; }
+  else { medal="🫖"; rank="TOSSED IN THE HARBOR"; blurb="Splash! Don't worry — even the Liberty Bell cracked under pressure. Try again!"; }
+
+  document.getElementById('bigmedal').textContent=medal;
+  document.getElementById('rank').textContent=rank;
+  document.getElementById('scoreline').textContent="You earned "+score+" of "+maxScore+" stars!";
+  document.getElementById('blurb').textContent=blurb;
+  document.getElementById('factcount').textContent="🇺🇸 21 ridiculous-but-true facts learned 🇺🇸";
+
+  launchFireworks();
+}
+
+function launchFireworks(){
+  const colors=["#b22234","#ffffff","#10204a","#f7d04a"];
+  let bursts=0;
+  const timer=setInterval(()=>{
+    const cx=10+Math.random()*80, cy=15+Math.random()*45;
+    for(let i=0;i<26;i++){
+      const p=document.createElement('div');
+      p.className="fw";
+      p.style.left=cx+"vw"; p.style.top=cy+"vh";
+      p.style.background=colors[Math.floor(Math.random()*colors.length)];
+      const ang=(Math.PI*2*i)/26, dist=60+Math.random()*70;
+      p.animate([
+        {transform:"translate(0,0)",opacity:1},
+        {transform:"translate("+Math.cos(ang)*dist+"px,"+Math.sin(ang)*dist+"px)",opacity:0}
+      ],{duration:900+Math.random()*500,easing:"cubic-bezier(.2,.6,.3,1)"});
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(),1500);
+    }
+    if(++bursts>=6) clearInterval(timer);
+  },650);
+}
+</script>
+</body>
+</html>

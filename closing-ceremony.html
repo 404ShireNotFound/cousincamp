@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Closing Ceremony · Cousin Camp Olympics 2026</title>
+<style>
+  :root{
+    --gold:#d4af37; --gold-lt:#f3df9b; --silver:#aab2bd; --bronze:#cd7f32;
+    --blue:#0b5394; --blue-dk:#072744; --red:#c1272d; --green:#2e8b57;
+    --ink:#10243f; --paper:#f4f8fe;
+    --ring-blue:#0081c8; --ring-yellow:#fcb131; --ring-black:#000;
+    --ring-green:#00a651; --ring-red:#ee334e;
+    /* lego brick colors */
+    --lg-red:#e3000b; --lg-blue:#0057a8; --lg-yellow:#ffcf00;
+    --lg-green:#00963c; --lg-white:#f7f7f2; --lg-tan:#e8d6a8; --lg-gray:#8a8d8f;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:#fff;
+    min-height:100vh;overflow-x:hidden;
+    background:
+      radial-gradient(circle at 12% 6%, rgba(255,255,255,.10), transparent 40%),
+      radial-gradient(circle at 88% 96%, rgba(255,216,107,.18), transparent 45%),
+      linear-gradient(165deg,#0a2f5c 0%,#0b5394 50%,#0d6bb8 100%);
+  }
+
+  /* ===== HERO ===== */
+  .hero{text-align:center;padding:26px 16px 6px;position:relative}
+  .back{position:absolute;left:14px;top:16px;text-decoration:none;color:#fff;
+    font-weight:700;font-size:.84rem;background:rgba(255,255,255,.16);padding:7px 14px;
+    border-radius:30px;border:1px solid rgba(255,255,255,.25);transition:transform .15s}
+  .back:hover{transform:translateX(-3px)}
+  .rings{position:relative;height:52px;margin:0 auto 8px;width:108px}
+  .rings span{position:absolute;width:38px;height:38px;border:6px solid;border-radius:50%}
+  .rings span:nth-child(1){border-color:var(--ring-blue);left:0;top:0}
+  .rings span:nth-child(2){border-color:var(--ring-black);left:34px;top:0}
+  .rings span:nth-child(3){border-color:var(--ring-red);left:68px;top:0}
+  .rings span:nth-child(4){border-color:var(--ring-yellow);left:17px;top:20px}
+  .rings span:nth-child(5){border-color:var(--ring-green);left:51px;top:20px}
+  .hero h1{margin:4px 0 0;font-size:2.2rem;font-weight:800;line-height:1.04;
+    text-shadow:0 3px 18px rgba(0,0,0,.35)}
+  .hero h1 .em{font-size:1.8rem}
+  .hero .sub{margin:9px auto 0;max-width:560px;font-size:.98rem;opacity:.95;font-weight:500}
+  .ribbon{display:inline-block;margin:14px 0 2px;padding:7px 18px;border-radius:30px;
+    background:linear-gradient(110deg,var(--gold),#f0c75a);color:#3a2a00;
+    font-size:.8rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+    box-shadow:0 6px 18px rgba(212,175,55,.4)}
+
+  /* confetti */
+  .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .confetti i{position:absolute;top:-12px;width:9px;height:14px;opacity:.85;
+    animation:fall linear infinite}
+  @keyframes fall{
+    0%{transform:translateY(-20px) rotate(0)}
+    100%{transform:translateY(105vh) rotate(540deg)}
+  }
+
+  /* ===== STAGE ===== */
+  .wrap{max-width:980px;margin:0 auto;padding:14px 16px 60px;position:relative;z-index:1}
+  .stage{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .panel{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+    border-radius:22px;padding:18px 16px 20px;backdrop-filter:blur(6px);
+    box-shadow:0 12px 34px rgba(0,0,0,.22);text-align:center;overflow:hidden}
+  .panel h2{margin:0 0 2px;font-size:1.25rem;font-weight:800}
+  .panel .cap{font-size:.82rem;opacity:.85;margin:0 0 12px;font-style:italic}
+  .scene{position:relative;height:280px;margin:0 auto;display:flex;
+    align-items:flex-end;justify-content:center}
+
+  /* ===================== LEGO BUILD (left) ===================== */
+  .lego{position:relative;width:230px;height:260px}
+  /* ground baseplate */
+  .baseplate{position:absolute;left:0;bottom:0;width:230px;height:18px;border-radius:5px;
+    background:repeating-linear-gradient(90deg,#2e7d32 0 16px,#2a722e 16px 18px);
+    box-shadow:inset 0 3px 0 rgba(255,255,255,.18),0 4px 10px rgba(0,0,0,.3)}
+  .baseplate::before{content:"";position:absolute;top:-5px;left:6px;right:6px;height:6px;
+    background-image:radial-gradient(circle,#3a8c3e 3px,transparent 3.5px);
+    background-size:18px 6px}
+
+  /* a brick */
+  .brick{position:absolute;border-radius:4px;opacity:0;
+    box-shadow:inset 0 4px 0 rgba(255,255,255,.28),inset 0 -5px 0 rgba(0,0,0,.18),
+      0 3px 6px rgba(0,0,0,.28);
+    animation:drop .55s cubic-bezier(.34,1.56,.5,1) forwards}
+  /* studs on top of brick */
+  .brick::before{content:"";position:absolute;top:-5px;left:0;right:0;height:6px;
+    background-image:radial-gradient(circle,rgba(255,255,255,.55) 3px,transparent 3.6px);
+    background-size:14px 6px;background-position:3px 0}
+  @keyframes drop{
+    0%{opacity:0;transform:translateY(-150px) rotate(-8deg)}
+    70%{opacity:1}
+    100%{opacity:1;transform:translateY(0) rotate(0)}
+  }
+
+  /* clock tower roof flag */
+  .flag{position:absolute;width:0;height:0;opacity:0;
+    animation:drop .5s ease forwards}
+  .flagpole{position:absolute;left:111px;bottom:236px;width:3px;height:26px;
+    background:#cfcfcf;opacity:0;animation:fadein .4s 2.5s forwards}
+  .pennant{position:absolute;left:114px;bottom:250px;width:0;height:0;opacity:0;
+    border-left:18px solid var(--lg-red);
+    border-top:7px solid transparent;border-bottom:7px solid transparent;
+    animation:fadein .4s 2.6s forwards}
+  @keyframes fadein{to{opacity:1}}
+
+  /* "DONE" sparkle */
+  .built-tag{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%) scale(.6);
+    background:linear-gradient(110deg,var(--gold),#f0c75a);color:#3a2a00;
+    font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+    padding:5px 12px;border-radius:20px;opacity:0;white-space:nowrap;
+    box-shadow:0 5px 14px rgba(212,175,55,.5);
+    animation:tagpop .5s 4.4s cubic-bezier(.2,1.6,.4,1) forwards}
+  @keyframes tagpop{to{opacity:1;transform:translateX(-50%) scale(1)}}
+
+  .replay{margin-top:14px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3);
+    cursor:pointer;font-family:inherit;font-weight:700;font-size:.82rem;padding:8px 16px;
+    border-radius:22px;transition:background .15s}
+  .replay:hover{background:rgba(255,255,255,.26)}
+
+  /* ===================== DANCING HAMSTER (right) ===================== */
+  .ham-stage{position:relative;width:200px;height:260px;display:flex;flex-direction:column;
+    align-items:center;justify-content:flex-end}
+  .dancefloor{position:absolute;bottom:0;width:200px;height:16px;border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(255,255,255,.35),rgba(255,255,255,0) 70%)}
+  .disco{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:1.5rem;
+    animation:discoSpin 3s linear infinite}
+  @keyframes discoSpin{to{transform:translateX(-50%) rotate(360deg)}}
+
+  .hamster{position:relative;width:130px;height:150px;margin-bottom:14px;
+    transform-origin:bottom center;animation:boogie .9s ease-in-out infinite}
+  @keyframes boogie{
+    0%,100%{transform:translateY(0) rotate(-4deg)}
+    25%{transform:translateY(-10px) rotate(0deg)}
+    50%{transform:translateY(0) rotate(4deg)}
+    75%{transform:translateY(-10px) rotate(0deg)}
+  }
+  /* body */
+  .ham-body{position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+    width:96px;height:104px;background:radial-gradient(circle at 38% 32%,#f6c98a,#e0a85e);
+    border-radius:50% 50% 46% 46%;box-shadow:inset -8px -8px 14px rgba(0,0,0,.12)}
+  /* tummy */
+  .ham-body::after{content:"";position:absolute;left:50%;bottom:8px;transform:translateX(-50%);
+    width:54px;height:64px;background:#fdeccb;border-radius:50%}
+  /* ears */
+  .ear{position:absolute;top:-6px;width:30px;height:30px;border-radius:50%;
+    background:#e0a85e;box-shadow:inset 0 0 0 7px #f6c98a}
+  .ear.l{left:8px;animation:earWig 0.9s ease-in-out infinite}
+  .ear.r{right:8px;animation:earWig 0.9s ease-in-out infinite reverse}
+  @keyframes earWig{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+  /* eyes */
+  .eye{position:absolute;top:34px;width:13px;height:13px;border-radius:50%;background:#2a1c0c}
+  .eye::after{content:"";position:absolute;top:2px;left:2px;width:5px;height:5px;border-radius:50%;background:#fff}
+  .eye.l{left:30px}.eye.r{right:30px}
+  /* cheeks */
+  .cheek{position:absolute;top:48px;width:18px;height:13px;border-radius:50%;
+    background:rgba(240,140,120,.6)}
+  .cheek.l{left:14px}.cheek.r{right:14px}
+  /* nose + mouth */
+  .nose{position:absolute;top:48px;left:50%;transform:translateX(-50%);
+    width:9px;height:7px;border-radius:50%;background:#c0506a}
+  .mouth{position:absolute;top:58px;left:50%;transform:translateX(-50%);
+    width:18px;height:9px;border:2px solid #8a5a3a;border-top:none;
+    border-radius:0 0 18px 18px}
+  /* arms waving */
+  .arm{position:absolute;bottom:46px;width:16px;height:42px;border-radius:10px;
+    background:#e0a85e;transform-origin:top center}
+  .arm.l{left:-2px;animation:armL 0.9s ease-in-out infinite}
+  .arm.r{right:-2px;animation:armR 0.9s ease-in-out infinite}
+  @keyframes armL{0%,100%{transform:rotate(30deg)}50%{transform:rotate(125deg)}}
+  @keyframes armR{0%,100%{transform:rotate(-125deg)}50%{transform:rotate(-30deg)}}
+  /* feet */
+  .foot{position:absolute;bottom:-8px;width:26px;height:14px;border-radius:50%;background:#d89a52}
+  .foot.l{left:18px;animation:footL .9s ease-in-out infinite}
+  .foot.r{right:18px;animation:footR .9s ease-in-out infinite}
+  @keyframes footL{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes footR{0%,100%{transform:translateY(-6px)}50%{transform:translateY(0)}}
+  /* music notes */
+  .note{position:absolute;font-size:1.2rem;opacity:0;animation:floatNote 2.2s linear infinite}
+  .note.n1{left:-6px;top:30px;animation-delay:0s}
+  .note.n2{right:-6px;top:50px;animation-delay:.7s}
+  .note.n3{left:10px;top:10px;animation-delay:1.4s}
+  @keyframes floatNote{
+    0%{opacity:0;transform:translateY(0) scale(.6)}
+    15%{opacity:1}
+    100%{opacity:0;transform:translateY(-70px) scale(1.1) rotate(20deg)}
+  }
+
+  /* footer */
+  footer{text-align:center;font-size:.82rem;opacity:.9;padding:24px 16px 10px;line-height:1.6}
+  footer .r{font-size:1.1rem;letter-spacing:-3px;display:block;margin-bottom:6px}
+
+  @media(max-width:680px){
+    .stage{grid-template-columns:1fr;gap:16px}
+    .hero h1{font-size:1.8rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="confetti" id="confetti"></div>
+
+<header class="hero">
+  <a class="back" href="index.html">← All Games</a>
+  <div class="rings"><span></span><span></span><span></span><span></span><span></span></div>
+  <h1><span class="em">🎉</span> Closing Ceremony <span class="em">🎉</span></h1>
+  <p class="sub">The torch is passed, the medals are won. Two grand finales: we <b>build Main Street, U.S.A.</b> brick by brick — and bust out the <b>interpretive dance</b>. Go Team Cousin!</p>
+  <div class="ribbon">🏅 Grand Finale · June 20</div>
+</header>
+
+<main class="wrap">
+  <div class="stage">
+
+    <!-- ===== LEFT: LEGO build ===== -->
+    <section class="panel">
+      <h2>🧱 The Big Build</h2>
+      <p class="cap">Watch Main Street, U.S.A. rise brick by brick</p>
+      <div class="scene">
+        <div class="lego" id="lego">
+          <div class="baseplate"></div>
+          <!-- bricks injected by JS -->
+          <div class="flagpole"></div>
+          <div class="pennant"></div>
+          <div class="built-tag">✨ Build Complete! ✨</div>
+        </div>
+      </div>
+      <button class="replay" onclick="buildLego()">🔄 Build it again</button>
+    </section>
+
+    <!-- ===== RIGHT: dancing hamster ===== -->
+    <section class="panel">
+      <h2>💃 Interpretive Dance</h2>
+      <p class="cap">Our official hype hamster shows you how it's done</p>
+      <div class="scene">
+        <div class="ham-stage">
+          <div class="disco">🪩</div>
+          <div class="hamster">
+            <span class="note n1">🎵</span>
+            <span class="note n2">🎶</span>
+            <span class="note n3">🎵</span>
+            <div class="arm l"></div>
+            <div class="arm r"></div>
+            <div class="ham-body">
+              <div class="ear l"></div>
+              <div class="ear r"></div>
+              <div class="eye l"></div>
+              <div class="eye r"></div>
+              <div class="cheek l"></div>
+              <div class="cheek r"></div>
+              <div class="nose"></div>
+              <div class="mouth"></div>
+            </div>
+            <div class="foot l"></div>
+            <div class="foot r"></div>
+          </div>
+          <div class="dancefloor"></div>
+        </div>
+      </div>
+      <button class="replay" onclick="cheer()">🎉 Cheer louder!</button>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <span class="r">🥇 🥈 🥉</span>
+  Elsie · Evrin · Geneva · Forrest — Cousin Camp Olympics 2026
+</footer>
+
+<script>
+/* ---------- CONFETTI ---------- */
+const COLORS = ["#e3000b","#0057a8","#ffcf00","#00963c","#f7f7f2","#d4af37"];
+function makeConfetti(n){
+  const box = document.getElementById("confetti");
+  for(let i=0;i<n;i++){
+    const c = document.createElement("i");
+    c.style.left = Math.random()*100 + "vw";
+    c.style.background = COLORS[Math.floor(Math.random()*COLORS.length)];
+    c.style.animationDuration = (3+Math.random()*3) + "s";
+    c.style.animationDelay = (-Math.random()*5) + "s";
+    c.style.borderRadius = Math.random()<.5 ? "2px" : "50%";
+    box.appendChild(c);
+  }
+}
+makeConfetti(40);
+function cheer(){ makeConfetti(30); }
+
+/* ---------- LEGO BUILD ----------
+   Each brick: x, y (px from baseplate top), width, height, color.
+   They drop in order to assemble a little Main Street storefront + clock tower. */
+const W = "var(--lg-white)", R="var(--lg-red)", B="var(--lg-blue)",
+      Y="var(--lg-yellow)", G="var(--lg-gray)", T="var(--lg-tan)";
+
+// baseplate top sits at bottom:18px. y = px above baseplate.
+const BRICKS = [
+  // ---- storefront base walls (tan) ----
+  {x:14, w:90, h:20, y:0,  c:T},
+  {x:108,w:90, h:20, y:0,  c:T},
+  {x:14, w:90, h:20, y:22, c:T},
+  {x:108,w:90, h:20, y:22, c:T},
+  // ---- door (blue) + windows (white) row ----
+  {x:84, w:44, h:30, y:0,  c:B},   // door
+  {x:24, w:34, h:22, y:46, c:W},   // window L
+  {x:150,w:34, h:22, y:46, c:W},   // window R
+  {x:62, w:30, h:22, y:46, c:T},
+  {x:120,w:30, h:22, y:46, c:T},
+  // ---- upper wall band (red awning) ----
+  {x:14, w:184,h:16, y:70, c:R},
+  // ---- second story (tan) ----
+  {x:14, w:60, h:22, y:88, c:T},
+  {x:78, w:56, h:22, y:88, c:T},
+  {x:138,w:60, h:22, y:88, c:T},
+  {x:40, w:30, h:18, y:92, c:W},   // upper window
+  {x:142,w:30, h:18, y:92, c:W},   // upper window
+  // ---- cornice ----
+  {x:8,  w:196,h:14, y:112,c:R},
+  // ---- clock tower (centered) ----
+  {x:86, w:56, h:24, y:128,c:T},
+  {x:86, w:56, h:24, y:154,c:T},
+  {x:94, w:40, h:30, y:178,c:W},   // clock face block
+  {x:80, w:68, h:12, y:210,c:B},   // tower cap base
+  {x:96, w:36, h:18, y:224,c:B},   // tower roof
+];
+
+let buildTimer = null;
+function buildLego(){
+  const lego = document.getElementById("lego");
+  // clear old bricks + reset flag/tag
+  lego.querySelectorAll(".brick").forEach(b=>b.remove());
+  const pole = lego.querySelector(".flagpole");
+  const pen  = lego.querySelector(".pennant");
+  const tag  = lego.querySelector(".built-tag");
+  [pole,pen,tag].forEach(el=>{ el.style.animation="none"; void el.offsetWidth; el.style.opacity="0"; });
+
+  if(buildTimer) clearTimeout(buildTimer);
+  const baseTop = 18; // baseplate height
+  let i=0;
+  function place(){
+    if(i>=BRICKS.length){
+      // restart flag + tag animations
+      [pole,pen,tag].forEach(el=>{ el.style.animation=""; });
+      // small confetti burst to celebrate
+      buildTimer = setTimeout(()=>makeConfetti(20), 600);
+      return;
+    }
+    const b = BRICKS[i];
+    const el = document.createElement("div");
+    el.className = "brick";
+    el.style.left = b.x + "px";
+    el.style.bottom = (baseTop + b.y) + "px";
+    el.style.width = b.w + "px";
+    el.style.height = b.h + "px";
+    el.style.background = b.c;
+    lego.appendChild(el);
+    i++;
+    buildTimer = setTimeout(place, 200);
+  }
+  place();
+}
+buildLego();
+</script>
+</body>
+</html>

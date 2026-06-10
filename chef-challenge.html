@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chef's Challenge · Mystery Basket Generator</title>
+<style>
+  :root{
+    --orange:#d9760f; --orange-lt:#f0a23b; --cream:#fff6e9; --ink:#3a2410;
+    --paper:#fff;
+    --ring-blue:#0081c8; --ring-yellow:#fcb131; --ring-black:#000;
+    --ring-green:#00a651; --ring-red:#ee334e;
+    --gold:#d4af37; --gold-lt:#f3df9b;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 8%, rgba(255,255,255,.5), transparent 42%),
+      radial-gradient(circle at 85% 92%, rgba(217,118,15,.18), transparent 45%),
+      linear-gradient(165deg,#ffe9c7 0%,#ffd9a3 55%,#f7c682 100%);
+  }
+
+  /* ===== HERO ===== */
+  .hero{text-align:center;padding:28px 16px 10px;position:relative}
+  .back{position:absolute;left:14px;top:16px;text-decoration:none;color:var(--orange);
+    font-weight:700;font-size:.86rem;background:rgba(255,255,255,.7);padding:7px 13px;
+    border-radius:30px;box-shadow:0 3px 10px rgba(0,0,0,.08);transition:transform .15s}
+  .back:hover{transform:translateX(-3px)}
+  .rings{position:relative;height:46px;margin:0 auto 6px;width:96px}
+  .rings span{position:absolute;width:34px;height:34px;border:5px solid;border-radius:50%}
+  .rings span:nth-child(1){border-color:var(--ring-blue);left:0;top:0}
+  .rings span:nth-child(2){border-color:var(--ring-black);left:30px;top:0}
+  .rings span:nth-child(3){border-color:var(--ring-red);left:60px;top:0}
+  .rings span:nth-child(4){border-color:var(--ring-yellow);left:15px;top:18px}
+  .rings span:nth-child(5){border-color:var(--ring-green);left:45px;top:18px}
+  .hero .chef{font-size:3rem;display:block;margin:4px 0 2px}
+  .hero h1{margin:2px 0 0;font-size:2rem;font-weight:800;color:#7a3f06;
+    text-shadow:0 2px 0 #fff,0 4px 14px rgba(0,0,0,.12);line-height:1.05}
+  .hero .sub{margin:8px auto 0;max-width:520px;font-size:.96rem;color:#8a5a22;font-weight:500}
+  .ribbon{display:inline-block;margin:14px 0 4px;padding:7px 18px;border-radius:30px;
+    background:linear-gradient(110deg,var(--orange),var(--orange-lt));color:#fff;
+    font-size:.82rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    box-shadow:0 5px 16px rgba(217,118,15,.35)}
+
+  /* ===== CARDS ===== */
+  .wrap{max-width:880px;margin:0 auto;padding:16px 16px 60px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
+
+  .card{position:relative;background:var(--paper);border-radius:22px;overflow:hidden;
+    box-shadow:0 8px 26px rgba(122,63,6,.16);border:1px solid #f1e2cc;cursor:pointer;
+    transition:transform .2s ease,box-shadow .2s ease;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(122,63,6,.24)}
+  .card:active{transform:translateY(-2px) scale(.99)}
+  .card .top{padding:18px 16px 14px;color:#fff;text-align:center;position:relative;overflow:hidden}
+  .card .top::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 80% -10%,rgba(255,255,255,.3),transparent 60%)}
+  .card .avatar{font-size:2.6rem;display:block;line-height:1}
+  .card .name{font-size:1.3rem;font-weight:800;margin:4px 0 0}
+  .card .toque{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.9}
+
+  .card .basket{padding:14px 14px 16px;flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;min-height:150px;gap:8px;text-align:center}
+  .card .prompt{color:#a07a4a;font-size:.86rem;font-weight:600;line-height:1.4}
+  .card .prompt .big{font-size:1.6rem;display:block;margin-bottom:4px}
+
+  .ing{display:flex;align-items:center;gap:9px;width:100%;
+    background:linear-gradient(110deg,#fff8ec,#fdedcf);border:1px solid #f0dcae;
+    border-radius:12px;padding:8px 11px;font-size:.92rem;font-weight:600;color:#5e3d12;
+    opacity:0;transform:translateY(10px) scale(.95);animation:pop .4s ease forwards}
+  .ing .emoji{font-size:1.3rem;flex:0 0 auto}
+  @keyframes pop{to{opacity:1;transform:none}}
+
+  .reroll{margin-top:4px;background:none;border:none;cursor:pointer;color:var(--orange);
+    font-weight:700;font-size:.8rem;font-family:inherit;padding:6px 10px;border-radius:20px;
+    transition:background .15s}
+  .reroll:hover{background:#fff1da}
+
+  footer{text-align:center;color:#9a6a30;font-size:.78rem;padding:10px 16px 40px;line-height:1.6}
+  footer .r{font-size:1rem;letter-spacing:-4px;display:block;margin-bottom:6px;opacity:.85}
+
+  @media(max-width:520px){
+    .hero h1{font-size:1.7rem}
+    .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <a class="back" href="index.html">← All Games</a>
+  <div class="rings"><span></span><span></span><span></span><span></span><span></span></div>
+  <span class="chef">👩‍🍳</span>
+  <h1>Chef's Challenge</h1>
+  <p class="sub">Tap your chef's card to reveal your <b>3 secret ingredients</b>. As a team, you'll pick your favorite card of 3 ingredients and we'll go get them. They <i>must</i> all make it into tonight's dinner. Ready, set, cook!</p>
+  <div class="ribbon">🧺 Mystery Basket Draw</div>
+</header>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <span class="r">🥇 🥈 🥉</span>
+  Gold medal for the dinner that wows the judges · Cousin Camp 2026
+</footer>
+
+<script>
+/* ---------- CHEFS ---------- */
+const CHEFS = [
+  {name:"Elsie",   avatar:"👧", color:"linear-gradient(125deg,#c1272d,#e23b46)"},
+  {name:"Evrin",   avatar:"🧒", color:"linear-gradient(125deg,#0b5394,#0d6bb8)"},
+  {name:"Geneva",  avatar:"👧", color:"linear-gradient(125deg,#2e8b57,#3cb371)"},
+  {name:"Forrest", avatar:"🧒", color:"linear-gradient(125deg,#5b3a8e,#8158c4)"}
+];
+
+/* ---------- INGREDIENT POOL (kid-friendly) ---------- */
+const INGREDIENTS = [
+  {e:"🍗",n:"Chicken"},{e:"🥚",n:"Eggs"},{e:"🧀",n:"Cheese"},{e:"🍅",n:"Tomatoes"},
+  {e:"🥔",n:"Potatoes"},{e:"🍝",n:"Pasta"},{e:"🍚",n:"Rice"},{e:"🥦",n:"Broccoli"},
+  {e:"🥕",n:"Carrots"},{e:"🌽",n:"Corn"},{e:"🥑",n:"Avocado"},{e:"🍄",n:"Mushrooms"},
+  {e:"🧅",n:"Onion"},{e:"🧄",n:"Garlic"},{e:"🫑",n:"Bell Pepper"},{e:"🥬",n:"Lettuce"},
+  {e:"🥒",n:"Cucumber"},{e:"🌶️",n:"Chili Pepper"},{e:"🫘",n:"Beans"},{e:"🍞",n:"Bread"},
+  {e:"🧈",n:"Butter"},{e:"🥓",n:"Bacon"},{e:"🌭",n:"Sausage"},{e:"🦐",n:"Shrimp"},
+  {e:"🐟",n:"Fish"},{e:"🍤",n:"Breaded Shrimp"},{e:"🥩",n:"Steak"},{e:"🍋",n:"Lemon"},
+  {e:"🍯",n:"Honey"},{e:"🧂",n:"Salt & Pepper"},{e:"🌿",n:"Fresh Herbs"},{e:"🫒",n:"Olives"},
+  {e:"🥜",n:"Peanuts"},{e:"🍓",n:"Strawberries"},{e:"🍎",n:"Apple"},{e:"🍌",n:"Banana"},
+  {e:"🍫",n:"Chocolate"},{e:"🥥",n:"Coconut"},{e:"🥛",n:"Milk"},{e:"🧇",n:"Waffle"},
+  {e:"🥞",n:"Pancakes"},{e:"🍦",n:"Ice Cream"},{e:"🫓",n:"Tortilla"},{e:"🥖",n:"Baguette"},
+  {e:"🍠",n:"Sweet Potato"},{e:"🟢",n:"Peas"},{e:"🍐",n:"Pear"},{e:"🍊",n:"Orange"}
+];
+
+/* pick n unique ingredients */
+function drawIngredients(n){
+  const pool = INGREDIENTS.slice();
+  const out = [];
+  for(let i=0;i<n;i++){
+    const idx = Math.floor(Math.random()*pool.length);
+    out.push(pool.splice(idx,1)[0]);
+  }
+  return out;
+}
+
+/* ---------- RENDER ---------- */
+const grid = document.getElementById("grid");
+
+CHEFS.forEach(chef=>{
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <div class="top" style="background:${chef.color}">
+      <span class="avatar">${chef.avatar}</span>
+      <div class="name">${chef.name}</div>
+      <div class="toque">Head Chef</div>
+    </div>
+    <div class="basket">
+      <div class="prompt"><span class="big">🧺</span>Tap to draw your<br>3 secret ingredients!</div>
+    </div>`;
+
+  const basket = card.querySelector(".basket");
+
+  function reveal(){
+    const picks = drawIngredients(3);
+    basket.innerHTML = "";
+    picks.forEach((ing,i)=>{
+      const row = document.createElement("div");
+      row.className = "ing";
+      row.style.animationDelay = (i*0.12)+"s";
+      row.innerHTML = `<span class="emoji">${ing.e}</span><span>${ing.n}</span>`;
+      basket.appendChild(row);
+    });
+    const btn = document.createElement("button");
+    btn.className = "reroll";
+    btn.textContent = "🔄 Draw again";
+    btn.addEventListener("click", e=>{ e.stopPropagation(); reveal(); });
+    basket.appendChild(btn);
+  }
+
+  card.addEventListener("click", reveal);
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>

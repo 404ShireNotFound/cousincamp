@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cousin Camp Olympics — Science Day · Udvar-Hazy Scavenger Hunt</title>
+<style>
+  :root{
+    --gold:#d4af37; --silver:#aab2bd; --bronze:#cd7f32;
+    --blue:#0b5394; --red:#c1272d; --ink:#13233b; --paper:#f7f9fc;
+    --space1:#0a1733; --space2:#13245a; --space3:#3a1d6e;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    color:var(--ink);overflow-x:hidden;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 31px, rgba(11,83,147,.04) 31px 32px),
+      repeating-linear-gradient(90deg, transparent 0 31px, rgba(11,83,147,.04) 31px 32px),
+      linear-gradient(180deg,#dbe8fb 0%, #eef4fc 30%, #f7f9fc 100%);
+    min-height:100vh;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important}
+  }
+
+  /* ===================== AMBIENT FULL-PAGE FLYERS ===================== */
+  .ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .lane{position:absolute;left:0;will-change:transform}
+  .fly{animation:flyX linear infinite}
+  @keyframes flyX{from{transform:translateX(-220px)}to{transform:translateX(115vw)}}
+  @keyframes flyXrev{from{transform:translateX(115vw) scaleX(-1)}to{transform:translateX(-220px) scaleX(-1)}}
+  .bob{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+  /* ===================== HERO ===================== */
+  .hero{position:relative;overflow:hidden;color:#fff;text-align:center;
+    padding:30px 16px 46px;
+    background:
+      radial-gradient(120% 90% at 15% 8%, rgba(120,90,220,.55) 0%, rgba(0,0,0,0) 55%),
+      radial-gradient(120% 110% at 88% 100%, rgba(0,150,210,.5) 0%, rgba(0,0,0,0) 60%),
+      linear-gradient(160deg,var(--space1) 0%, var(--space2) 55%, var(--space3) 100%);
+  }
+  .hero .stars{position:absolute;inset:0;z-index:0}
+  .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s ease-in-out infinite}
+  @keyframes twinkle{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
+
+  .scene{position:absolute;inset:0;z-index:1;pointer-events:none}
+  .hero-content{position:relative;z-index:3}
+  .rings{font-size:1.6rem;letter-spacing:-7px;margin-bottom:6px;
+    filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+  .hero h1{margin:0;font-size:2rem;letter-spacing:1px;text-shadow:0 3px 14px rgba(0,0,0,.5)}
+  .hero .tag{display:inline-block;margin-top:8px;padding:5px 16px;border-radius:30px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    font-size:.82rem;letter-spacing:2px;text-transform:uppercase}
+  .hero .quip{margin:12px 0 0;font-size:.92rem;color:#bfe0ff;font-style:italic}
+
+  /* planets */
+  .planet{position:absolute;border-radius:50%}
+  .planet .ring{position:absolute;inset:-32% -55%;border:3px solid rgba(255,255,255,.55);
+    border-radius:50%;transform:rotate(-22deg);border-left-color:transparent;border-right-color:transparent}
+  .p-saturn{width:64px;height:64px;top:26px;right:8%;
+    background:radial-gradient(circle at 35% 32%, #ffd98a, #d98a3a)}
+  .p-blue{width:34px;height:34px;top:60%;left:6%;
+    background:radial-gradient(circle at 35% 30%, #9fe7ff, #2b7fb8);opacity:.9}
+
+  /* orbit system */
+  .orbit{position:absolute;top:34px;left:26%;width:120px;height:120px;
+    border:1px dashed rgba(255,255,255,.25);border-radius:50%;animation:spin 16s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .orbit .sat-orb{position:absolute;top:-16px;left:50%;margin-left:-22px;animation:spin 16s linear infinite reverse}
+
+  /* launching rocket + pad */
+  .launchpad{position:absolute;bottom:0;left:14%;z-index:2}
+  .rocketwrap{position:relative;animation:launch 7s ease-in infinite}
+  @keyframes launch{
+    0%{transform:translateY(0);opacity:0}
+    8%{opacity:1}
+    78%{transform:translateY(-300px);opacity:1}
+    92%{transform:translateY(-360px);opacity:0}
+    100%{transform:translateY(0);opacity:0}
+  }
+  .flame{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);transform-origin:top center;
+    animation:flick .12s steps(2) infinite}
+  @keyframes flick{0%{transform:translateX(-50%) scaleY(.8)}100%{transform:translateX(-50%) scaleY(1.15)}}
+  .smoke{position:absolute;bottom:2px;left:14%;z-index:1}
+  .puff{position:absolute;width:24px;height:24px;border-radius:50%;background:rgba(220,230,245,.5);
+    animation:puff 7s ease-out infinite}
+  @keyframes puff{0%{transform:scale(.2);opacity:0}10%{opacity:.6}60%{opacity:.35}100%{transform:scale(2.4) translateY(10px);opacity:0}}
+
+  /* telescope + observatory */
+  .telescope{position:absolute;bottom:0;right:5%;transform-origin:30% 90%;animation:sway 6s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(3deg)}}
+  .dome{position:absolute;bottom:0;right:22%}
+
+  /* shooting star */
+  .shoot{position:absolute;width:90px;height:2px;background:linear-gradient(90deg,#fff,rgba(255,255,255,0));
+    border-radius:2px;top:18%;left:40%;opacity:0;transform:rotate(20deg);animation:shoot 6s ease-in infinite}
+  .shoot.b{top:30%;left:62%;animation-delay:3.2s}
+  @keyframes shoot{0%{opacity:0;transform:translate(0,0) rotate(20deg)}
+    6%{opacity:1}22%{opacity:0;transform:translate(-260px,95px) rotate(20deg)}100%{opacity:0}}
+
+  .wave{display:block;width:100%;height:30px;margin-top:-1px;position:relative;z-index:2}
+
+  /* ===================== LAYOUT ===================== */
+  .wrap{max-width:780px;margin:0 auto;padding:8px 16px 70px;position:relative;z-index:1}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:520px){.cards{grid-template-columns:1fr}}
+  .card{
+    position:relative;background:rgba(255,255,255,.93);border-radius:18px;padding:18px;cursor:pointer;
+    box-shadow:0 6px 22px rgba(11,83,147,.16);border:2px solid transparent;
+    transition:transform .15s,border-color .15s,box-shadow .15s;backdrop-filter:blur(2px);overflow:hidden}
+  .card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 12px 30px rgba(11,83,147,.22)}
+  .card .ic{position:absolute;top:-8px;right:-6px;font-size:3.2rem;opacity:.10;transform:rotate(-12deg)}
+  .card h2{margin:0 0 2px;font-size:1.25rem}
+  .card .role{font-size:.8rem;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .bar{height:11px;background:#e6ecf5;border-radius:8px;overflow:hidden;margin-top:14px}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#f1d77a);transition:width .5s}
+  .card small{display:block;margin-top:7px;color:#5a6b80;font-size:.8rem;font-weight:600}
+
+  .section-h{margin:6px 0 14px;text-align:center}
+  .section-h h3{margin:0;font-size:1.05rem;color:var(--blue);letter-spacing:.5px}
+  .section-h p{margin:4px 0 0;font-size:.82rem;color:#6b7a90}
+
+  /* HUNT VIEW */
+  .back{background:none;border:none;color:var(--blue);font-weight:700;cursor:pointer;font-size:.95rem;padding:8px 0;margin-bottom:2px}
+  .hunt-head{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .hunt-head h2{margin:0;font-size:1.5rem}
+  .hunt-head .role{font-size:.8rem;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+  .topbar{position:sticky;top:0;background:rgba(247,249,252,.5);
+    padding:10px 8px;margin:0 -8px;border-radius:12px;z-index:5;
+    backdrop-filter:blur(12px) saturate(125%);-webkit-backdrop-filter:blur(12px) saturate(125%)}
+  .topbar .bar{height:15px}
+  .count{font-size:.85rem;color:#5a6b80;margin-top:6px;font-weight:700}
+  ul.items{list-style:none;padding:0;margin:16px 0 0}
+  li.item{
+    background:rgba(255,255,255,.55);border-radius:14px;padding:14px;margin-bottom:10px;
+    display:flex;gap:12px;align-items:flex-start;box-shadow:0 4px 18px rgba(11,83,147,.12);
+    cursor:pointer;transition:background .15s,transform .1s,border-color .15s;
+    border:1.5px solid rgba(255,255,255,.65);
+    backdrop-filter:blur(10px) saturate(125%);-webkit-backdrop-filter:blur(10px) saturate(125%)}
+  li.item:active{transform:scale(.99)}
+  li.item.done{background:rgba(214,243,214,.5);border-color:rgba(150,210,150,.6)}
+  .box{flex:0 0 27px;height:27px;border:2.5px solid var(--silver);border-radius:8px;margin-top:2px;
+    display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff;transition:.15s}
+  li.item.done .box{background:var(--gold);border-color:var(--gold);transform:rotate(8deg) scale(1.05)}
+  .txt b{display:block;font-size:1rem;margin-bottom:2px}
+  li.item.done .txt b{text-decoration:line-through;color:#7a8aa0}
+  .txt span{font-size:.85rem;color:#5a6b80;line-height:1.35}
+  .emoji{font-size:1.15rem;margin-right:3px}
+  .actions{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+  .reset{background:none;border:1.5px solid #d7deea;color:#5a6b80;border-radius:20px;padding:8px 18px;font-size:.82rem;cursor:pointer}
+  .reset:hover{border-color:var(--red);color:var(--red)}
+  .hidden{display:none}
+
+  .win{background:linear-gradient(120deg,var(--gold),#f3df9b);color:#5a4500;border-radius:14px;
+    padding:14px;text-align:center;font-weight:700;margin-top:16px;display:none;animation:pop .4s}
+  .win.show{display:block}
+  @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+
+  footer{text-align:center;color:#7e8da0;font-size:.74rem;padding:24px 16px}
+</style>
+</head>
+<body>
+
+<!-- ================= AMBIENT PAGE FLYERS ================= -->
+<div class="ambient" id="ambient" aria-hidden="true"></div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <a href="../index.html" style="position:absolute;top:14px;left:14px;z-index:30;color:#eaf3ff;text-decoration:none;font-size:.84rem;font-weight:700;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:6px 14px;border-radius:30px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)">← Camp Home</a>
+  <div class="stars" id="heroStars"></div>
+
+  <div class="scene" aria-hidden="true">
+    <!-- planets -->
+    <div class="planet p-saturn"><span class="ring"></span></div>
+    <div class="planet p-blue"></div>
+
+    <!-- orbiting satellite -->
+    <div class="orbit">
+      <div class="sat-orb">
+        <svg width="44" height="26" viewBox="0 0 120 60">
+          <rect x="50" y="20" width="20" height="20" rx="2" fill="#cfe0f5" stroke="#0b5394" stroke-width="3"/>
+          <g fill="#1b3c78" stroke="#7fb2ff" stroke-width="2">
+            <rect x="4" y="20" width="38" height="20"/><rect x="78" y="20" width="38" height="20"/></g>
+          <line x1="23" y1="20" x2="23" y2="40" stroke="#7fb2ff" stroke-width="2"/>
+          <line x1="97" y1="20" x2="97" y2="40" stroke="#7fb2ff" stroke-width="2"/>
+          <line x1="60" y1="20" x2="60" y2="2" stroke="#cfe0f5" stroke-width="2"/>
+          <circle cx="60" cy="2" r="4" fill="#ffd23f"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- shooting stars -->
+    <span class="shoot"></span><span class="shoot b"></span>
+
+    <!-- launching rocket -->
+    <div class="launchpad">
+      <div class="rocketwrap">
+        <svg width="50" height="92" viewBox="0 0 60 120">
+          <path d="M30,4 C50,28 50,66 42,96 L18,96 C10,66 10,28 30,4 Z" fill="#f4f7fc" stroke="#ff7a1a" stroke-width="3"/>
+          <path d="M30,4 C40,26 42,56 42,86 L30,86 Z" fill="#dbe6f5" opacity="0.55"/>
+          <circle cx="30" cy="42" r="9" fill="#0a2540" stroke="#ff7a1a" stroke-width="3"/>
+          <circle cx="27" cy="39" r="3" fill="#9fd8ff"/>
+          <path d="M18,84 L2,108 L18,96 Z" fill="#ff7a1a"/>
+          <path d="M42,84 L58,108 L42,96 Z" fill="#ff7a1a"/>
+          <rect x="20" y="94" width="20" height="8" rx="2" fill="#0a2540"/>
+        </svg>
+        <svg class="flame" width="26" height="40" viewBox="0 0 26 40">
+          <path d="M13,40 C2,24 5,10 13,0 C21,10 24,24 13,40 Z" fill="#ffd23f"/>
+          <path d="M13,40 C7,26 8,14 13,6 C18,14 19,26 13,40 Z" fill="#ff7a1a"/>
+          <path d="M13,40 C10,30 11,22 13,16 C15,22 16,30 13,40 Z" fill="#fff3c4"/>
+        </svg>
+      </div>
+      <div class="smoke">
+        <span class="puff" style="left:0;animation-delay:.2s"></span>
+        <span class="puff" style="left:18px;animation-delay:1.4s"></span>
+        <span class="puff" style="left:-14px;animation-delay:2.6s"></span>
+      </div>
+    </div>
+
+    <!-- telescope -->
+    <svg class="telescope" width="120" height="120" viewBox="0 0 120 120">
+      <g stroke="#0a2540" stroke-width="4" stroke-linecap="round">
+        <line x1="60" y1="78" x2="40" y2="118"/><line x1="60" y1="78" x2="80" y2="118"/>
+        <line x1="60" y1="78" x2="60" y2="112"/>
+      </g>
+      <g transform="rotate(-32 64 70)">
+        <rect x="30" y="58" width="78" height="22" rx="11" fill="#1b3c78" stroke="#7fb2ff" stroke-width="3"/>
+        <rect x="98" y="52" width="16" height="34" rx="6" fill="#cfe0f5" stroke="#0b5394" stroke-width="3"/>
+        <rect x="22" y="60" width="12" height="18" rx="4" fill="#0a2540"/>
+        <circle cx="106" cy="69" r="3" fill="#ffd23f"/>
+      </g>
+      <circle cx="60" cy="76" r="5" fill="#0a2540"/>
+    </svg>
+
+    <!-- observatory dome -->
+    <svg class="dome" width="92" height="60" viewBox="0 0 92 60">
+      <rect x="10" y="44" width="72" height="16" fill="#16264d"/>
+      <path d="M8,46 A38,38 0 0 1 84,46 Z" fill="#24386e" stroke="#7fb2ff" stroke-width="2"/>
+      <path d="M46,10 L46,46 L58,46 A30,30 0 0 0 52,12 Z" fill="#0a1733"/>
+      <circle cx="46" cy="46" r="2" fill="#ffd23f"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="rings">🥇 🥈 🥉</div>
+    <h1>SCIENCE DAY</h1>
+    <div class="tag">Cousin Camp Olympics · June 15</div>
+    <p class="quip">“Pocket protectors rule the world” — Steven F. Udvar-Hazy Air &amp; Space Center</p>
+  </div>
+
+  <svg class="wave" viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,40 L0,20 C240,40 480,4 720,14 C960,24 1200,40 1440,18 L1440,40 Z" fill="#f7f9fc"/>
+  </svg>
+</header>
+
+<div class="wrap">
+  <div id="hub"></div>
+  <div id="hunt" class="hidden"></div>
+</div>
+<footer>Find the most items to win the day's medal! 🏅 Tap to check things off — your progress saves automatically on this device.</footer>
+
+<script>
+const HUNTS = {
+  forrest: {
+    name:"Forrest", role:"Junior Aviator", emoji:"🛩️", ic:"🚀",
+    items:[
+      {e:"🚀", t:"The Space Shuttle Discovery", d:"The HUGE white spaceship in the big Space Hangar. Count the black tiles on its nose!"},
+      {e:"🖤", t:"A black super-fast spy plane", d:"All black and pointy — the SR-71 Blackbird."},
+      {e:"🚁", t:"A helicopter", d:"Look for spinning blades on top, in the Vertical Flight area."},
+      {e:"✈️", t:"An airplane hanging from the ceiling", d:"Look UP! Lots of planes are flying overhead."},
+      {e:"⭐", t:"A plane with a white star on it", d:"American military planes have a star painted on the wing or body."},
+      {e:"🦈", t:"A plane with a face or teeth painted on it", d:"Some fighter planes have shark teeth or eyes on the nose!"},
+      {e:"🪂", t:"A tiny ultralight", d:"Looks like a lawn chair with wings and a little engine."},
+      {e:"👃", t:"The Concorde", d:"A long skinny white jet with a droopy, pointy nose."},
+      {e:"🔴", t:"Any bright red airplane", d:"Find something colorful!"},
+      {e:"🛰️", t:"A small space capsule", d:"A little round pod that astronauts squeezed inside."},
+      {e:"🌀", t:"A plane with a propeller on the front", d:"The spinning blades that pull the plane through the air."},
+      {e:"🔢", t:"A plane with a number painted on it", d:"Say the number out loud when you find it!"},
+      {e:"💛", t:"A yellow airplane", d:"Hunt for a sunny yellow one."},
+      {e:"🔥", t:"A jet engine", d:"The big round tube that pushes a jet super fast."},
+      {e:"👨‍🚀", t:"An astronaut suit or helmet", d:"Look in the glass cases in the Space Hangar."},
+      {e:"🪑", t:"A plane you can see the seats inside", d:"Peek into an open cockpit."},
+      {e:"🛞", t:"Wheels taller than your knees", d:"Some plane tires are HUGE!"},
+      {e:"🚩", t:"A flag painted on a plane", d:"Find a flag from any country."},
+      {e:"🚀", t:"A rocket pointing up at the sky", d:"Tall and skinny, ready to launch."},
+      {e:"🗼", t:"The tall observation tower", d:"Go up and watch REAL planes land at the airport!"}
+    ]
+  },
+  evrin: {
+    name:"Evrin", role:"Flight Engineer", emoji:"🔧", ic:"🛰️",
+    items:[
+      {e:"☢️", t:"The Enola Gay", d:"Shiny silver WWII bomber (B-29). What name is painted near its nose?"},
+      {e:"🛫", t:"The Boeing Dash 80", d:"The prototype that became the famous 707 jetliner."},
+      {e:"🔄", t:"A tilt-rotor aircraft", d:"Half airplane, half helicopter — the Bell XV-15."},
+      {e:"🇩🇪", t:"A German WWII aircraft", d:"Find the Arado Ar 234 — the world's FIRST jet bomber."},
+      {e:"💼", t:"A business jet", d:"A sleek private jet in the Business Aviation section."},
+      {e:"🪖", t:"A jet from the Vietnam War", d:"Look for the F-4 Phantom."},
+      {e:"🚀", t:"A rocket or missile", d:"Tall and pointy — in the Space Hangar."},
+      {e:"🪵", t:"An airplane from before 1920", d:"Made of wood and fabric — Pre-1920 Aviation."},
+      {e:"💨", t:"The fastest jet in the world", d:"Read the SR-71's top speed off its placard (Mach 3+!)."},
+      {e:"⚙️", t:"An aircraft engine on its own", d:"An engine displayed by itself, not attached to a plane."},
+      {e:"🛏️", t:"The Boeing 307 Stratoliner", d:"First airliner with a pressurized cabin (1938). How many passengers did it carry?"},
+      {e:"🌍", t:"The Virgin Atlantic GlobalFlyer", d:"Flew solo around the world nonstop. Who was the pilot?"},
+      {e:"🐱", t:"A Grumman F-14 Tomcat", d:"Navy fighter with wings that swing back."},
+      {e:"🤖", t:"A drone / unmanned aircraft", d:"An aircraft built to fly with no pilot inside."},
+      {e:"💺", t:"An ejection seat", d:"The seat that rockets a pilot out in an emergency."},
+      {e:"📡", t:"A satellite", d:"A spacecraft built to orbit Earth — in the Space Hangar."},
+      {e:"🛩️", t:"A sailplane / glider with long wings", d:"Built to soar without an engine."},
+      {e:"⭕", t:"A radial engine", d:"An engine with cylinders arranged in a circle."},
+      {e:"🎖️", t:"A WWII fighter — name its country", d:"Find one and read which nation flew it."},
+      {e:"🗼", t:"The Engen Observation Tower", d:"Go up and spot a real plane on the Dulles runway."}
+    ]
+  },
+  geneva: {
+    name:"Geneva", role:"Navigator", emoji:"🧭", ic:"🔭",
+    items:[
+      {e:"✌️", t:"The P-38 Lightning", d:"A WWII fighter with TWO tail booms instead of one."},
+      {e:"⚔️", t:"A Korean War jet", d:"Find the F-86 Sabre OR the MiG-15."},
+      {e:"🌊", t:"A floatplane / seaplane", d:"Has floats or pontoons instead of wheels."},
+      {e:"🕊️", t:"A glider", d:"An aircraft with NO engine — it just soars."},
+      {e:"🇫🇷", t:"The Concorde", d:"Read the placard: which country's airline flew it?"},
+      {e:"🌙", t:"An Apollo or Mercury space artifact", d:"Something from the early astronaut missions."},
+      {e:"➿", t:"A biplane", d:"Two wings stacked on top of each other."},
+      {e:"🎯", t:"An aerobatic stunt plane", d:"Look for the deHavilland Chipmunk."},
+      {e:"🗓️", t:"Space Shuttle Discovery's final-flight year", d:"Find the year on Discovery's sign (hint: it's 2011)."},
+      {e:"📦", t:"A cargo or transport aircraft", d:"Big and boxy — built to haul stuff."},
+      {e:"🦅", t:"A Vought F4U Corsair", d:"WWII fighter with bent 'gull' wings."},
+      {e:"🥚", t:"The Gemini capsule", d:"Notice how tiny it is — TWO astronauts squeezed in!"},
+      {e:"🐯", t:"A plane with tiger or shark nose art", d:"Look in the Cold War / Modern Military area."},
+      {e:"🧤", t:"A spacesuit or astronaut glove", d:"Find one inside a glass display case."},
+      {e:"🪵", t:"A wooden propeller", d:"Early planes had propellers carved from wood."},
+      {e:"🌐", t:"A plane from a country that isn't the USA", d:"Read the flag or placard to be sure."},
+      {e:"🚁", t:"A Vietnam-era helicopter", d:"A military chopper from the 1960s-70s."},
+      {e:"🔍", t:"A model aircraft in a glass case", d:"A small-scale model on display."},
+      {e:"📐", t:"A jet with wings that fold or sweep back", d:"Wings that change shape or fold up."},
+      {e:"🕵️", t:"A Cold War spy / recon aircraft", d:"Find one built to take secret photos."}
+    ]
+  },
+  elsie: {
+    name:"Elsie", role:"Mission Commander", emoji:"🎖️", ic:"🌌",
+    items:[
+      {e:"🛰️", t:"Riddle: \"39 trips to space, 27 years of service, retired in 2011.\"", d:"Identify me, then find my total DAYS spent in orbit on the placard."},
+      {e:"🌑", t:"Riddle: \"Mach 3+, the color of midnight, no missile ever caught me.\"", d:"Name me and record my top speed from the sign."},
+      {e:"🍾", t:"Riddle: \"Supersonic elegance, droop-nosed, grounded in 2003.\"", d:"Which TWO airlines flew this jet? (placard)"},
+      {e:"⚡", t:"The world's FIRST operational jet bomber — and it's German.", d:"Identify it. What does its name \"Blitz\" mean in English?"},
+      {e:"🔃", t:"Find a \"push-pull\" plane with a propeller on BOTH ends.", d:"The Dornier Do 335 'Pfeil'. What does 'Pfeil' mean?"},
+      {e:"💥", t:"Find the aircraft that ended WWII in the Pacific.", d:"What city did its mission target?"},
+      {e:"🔄", t:"Find a tilt-rotor aircraft.", d:"Explain in one sentence how it's both a plane AND a helicopter."},
+      {e:"🚗", t:"Locate an autogiro — an early 'flying car' experiment.", d:"Hint: the AC-35. Why was it built?"},
+      {e:"🏺", t:"Find the OLDEST aircraft you can.", d:"Record the year it was built from its placard (check Pre-1920)."},
+      {e:"⚙️", t:"Find any aircraft engine and identify its type.", d:"Is it piston, jet, or rocket? Record the model name."},
+      {e:"🌍", t:"Riddle: \"Solo, nonstop, no refueling — one pilot circled the whole globe in me in 2005.\"", d:"Name the aircraft AND its pilot."},
+      {e:"☁️", t:"Riddle: \"First airliner with a pressurized cabin, 1938, named like a cloud.\"", d:"Identify it. What altitude could it cruise at?"},
+      {e:"🐱", t:"Find the F-14 Tomcat.", d:"Read about the 1989 Gulf of Sidra incident — what did it shoot down?"},
+      {e:"🛞", t:"Find a German WWII fighter with a round, air-cooled radial engine.", d:"Hint: Focke-Wulf Fw 190. What was its main role?"},
+      {e:"🪡", t:"Find a WWI-era aircraft (Pre-1920).", d:"What is its frame made of? (wood, fabric, wire...)"},
+      {e:"📐", t:"Find an aircraft with a 'swing wing' (variable geometry).", d:"Explain in one sentence why the wings sweep back."},
+      {e:"⚔️", t:"Find one propeller fighter AND one jet fighter.", d:"Name both — they represent two eras of air combat."},
+      {e:"📸", t:"Find a reconnaissance aircraft.", d:"Explain how its mission differs from a bomber's."},
+      {e:"🛰️", t:"Find a satellite or space probe.", d:"Read what it was built to study or do."},
+      {e:"🥊", t:"In the Korea/Vietnam area, find an American jet and its Soviet rival.", d:"Name both (hint: F-86 vs. MiG-15)."}
+    ]
+  }
+};
+const ORDER = ["forrest","evrin","geneva","elsie"];
+
+function load(id){ try{return JSON.parse(localStorage.getItem("ch_"+id))||[]}catch(e){return[]} }
+function save(id,arr){ localStorage.setItem("ch_"+id, JSON.stringify(arr)) }
+
+function renderHub(){
+  const hub=document.getElementById("hub"), hunt=document.getElementById("hunt");
+  hunt.classList.add("hidden"); hub.classList.remove("hidden");
+  let html=`<div class="section-h"><h3>Choose your camper</h3>
+    <p>Four scientists. Four missions. Most objectives found wins today's gold. 🏅</p></div><div class="cards">`;
+  ORDER.forEach(id=>{
+    const h=HUNTS[id], done=load(id).filter(Boolean).length, tot=h.items.length;
+    const pct=Math.round(done/tot*100);
+    html+=`<div class="card" onclick="renderHunt('${id}')">
+      <span class="ic">${h.ic}</span>
+      <div class="role">${h.emoji} ${h.role}</div>
+      <h2>${h.name}</h2>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <small>${done} of ${tot} found</small>
+    </div>`;
+  });
+  html+='</div>';
+  hub.innerHTML=html;
+}
+
+function renderHunt(id){
+  const hub=document.getElementById("hub"), hunt=document.getElementById("hunt");
+  hub.classList.add("hidden"); hunt.classList.remove("hidden");
+  window.scrollTo(0,0);
+  const h=HUNTS[id]; let state=load(id);
+  if(state.length!==h.items.length){state=new Array(h.items.length).fill(false);save(id,state);}
+  const done=state.filter(Boolean).length, tot=h.items.length, pct=Math.round(done/tot*100);
+  let html=`<button class="back" onclick="renderHub()">← All campers</button>
+    <div class="hunt-head"><div>
+      <div class="role">${h.emoji} ${h.role}</div>
+      <h2>${h.name}'s Mission</h2>
+    </div></div>
+    <div class="topbar">
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="count">${done} / ${tot} objectives found</div>
+    </div>
+    <div class="win ${done===tot?'show':''}">🏅 Clean sweep, ${h.name}! All 20 found — report to Mission Control (Uncle Jared)!</div>
+    <ul class="items">`;
+  h.items.forEach((it,i)=>{
+    html+=`<li class="item ${state[i]?'done':''}" onclick="toggle('${id}',${i})">
+      <div class="box">${state[i]?'✓':''}</div>
+      <div class="txt"><b><span class="emoji">${it.e}</span>${it.t}</b><span>${it.d}</span></div>
+    </li>`;
+  });
+  html+=`</ul>
+    <div class="actions">
+      <button class="reset" onclick="resetHunt('${id}')">Reset ${h.name}'s hunt</button>
+    </div>`;
+  hunt.innerHTML=html;
+}
+
+function toggle(id,i){
+  const state=load(id); state[i]=!state[i]; save(id,state); renderHunt(id);
+}
+function resetHunt(id){
+  if(confirm("Clear all checkmarks for "+HUNTS[id].name+"?")){
+    save(id,new Array(HUNTS[id].items.length).fill(false)); renderHunt(id);
+  }
+}
+
+/* ---------- twinkling stars ---------- */
+function sprinkle(el,n){
+  for(let i=0;i<n;i++){
+    const s=document.createElement('span'); s.className='star';
+    const sz=Math.random()*2+1;
+    s.style.width=s.style.height=sz+'px';
+    s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=(Math.random()*3)+'s';
+    el.appendChild(s);
+  }
+}
+
+/* ---------- ambient flyers across the whole page ---------- */
+const PLANE = `<svg width="116" height="40" viewBox="0 0 120 40">
+  <path d="M4,21 L1,7 L15,16 Z" fill="#b8c6db"/>
+  <path d="M6,21 Q12,13 46,13 L96,14 Q114,15 117,21 Q114,27 96,28 L46,29 Q12,29 6,21 Z" fill="#ffffff" stroke="#c3d0e2" stroke-width="1"/>
+  <path d="M52,21 L80,32 L93,32 L70,21 Z" fill="#cfd9e8"/>
+  <rect x="34" y="19" width="64" height="3" rx="1.5" fill="#0b5394" opacity=".7"/>
+  <g fill="#9fb6d4"><circle cx="40" cy="20" r="1.4"/><circle cx="50" cy="20" r="1.4"/><circle cx="60" cy="20" r="1.4"/><circle cx="70" cy="20" r="1.4"/><circle cx="80" cy="20" r="1.4"/></g>
+  <circle cx="113" cy="21" r="2.4" fill="#ff7a1a"/>
+</svg>`;
+const SAT = `<svg width="70" height="40" viewBox="0 0 120 60">
+  <rect x="50" y="20" width="20" height="20" rx="2" fill="#cfe0f5" stroke="#0b5394" stroke-width="3"/>
+  <g fill="#1b3c78" stroke="#7fb2ff" stroke-width="2"><rect x="4" y="20" width="38" height="20"/><rect x="78" y="20" width="38" height="20"/></g>
+  <line x1="60" y1="20" x2="60" y2="3" stroke="#9fb6d4" stroke-width="2"/><circle cx="60" cy="3" r="4" fill="#ffd23f"/>
+</svg>`;
+
+function spawnFlyer(){
+  const lane=document.createElement('div'); lane.className='lane';
+  const isSat=Math.random()<0.28;
+  const rev=Math.random()<0.45;
+  const dur=(isSat?38:20)+Math.random()*16;
+  const top=8+Math.random()*78;            // vh
+  const scale=(isSat?0.7:0.6)+Math.random()*0.6;
+  lane.style.top=top+'vh';
+  lane.style.opacity=(isSat?0.35:0.5);
+  lane.style.animation=`${rev?'flyXrev':'flyX'} ${dur}s linear forwards`;
+  const inner=document.createElement('div');
+  inner.className='bob';
+  inner.style.animationDuration=(3.5+Math.random()*3)+'s';
+  inner.style.transform=`scale(${scale})`;
+  inner.innerHTML=isSat?SAT:PLANE;
+  lane.appendChild(inner);
+  document.getElementById('ambient').appendChild(lane);
+  setTimeout(()=>lane.remove(), dur*1000+200);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  sprinkle(document.getElementById('heroStars'),70);
+  renderHub();
+  // initial wave + steady stream of flyers
+  for(let i=0;i<4;i++) setTimeout(spawnFlyer, i*1800);
+  setInterval(spawnFlyer, 3600);
+});
+</script>
+</body>
+</html>
