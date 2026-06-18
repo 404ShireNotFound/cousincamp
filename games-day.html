@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Games Day · Pool Olympics &amp; Reclaim Arcade</title>
+<style>
+  :root{
+    --aqua:#0a91c4; --aqua-lt:#36c5e8; --deep:#063b63; --foam:#eafaff;
+    --neon-pink:#ff2e88; --neon-purple:#8b2fff; --neon-cyan:#21e6ff;
+    --ink:#0a2236; --paper:#fff;
+    --ring-blue:#0081c8; --ring-yellow:#fcb131; --ring-black:#000;
+    --ring-green:#00a651; --ring-red:#ee334e;
+    --gold:#d4af37; --gold-lt:#f3df9b;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 6%, rgba(255,255,255,.55), transparent 40%),
+      radial-gradient(circle at 85% 95%, rgba(10,145,196,.20), transparent 45%),
+      linear-gradient(170deg,#d8f5ff 0%,#a7e4f7 45%,#7fd0ee 100%);
+  }
+
+  /* ===== HERO ===== */
+  .hero{text-align:center;padding:28px 16px 8px;position:relative}
+  .back{position:absolute;left:14px;top:16px;text-decoration:none;color:var(--aqua);
+    font-weight:700;font-size:.86rem;background:rgba(255,255,255,.78);padding:7px 13px;
+    border-radius:30px;box-shadow:0 3px 10px rgba(0,0,0,.10);transition:transform .15s}
+  .back:hover{transform:translateX(-3px)}
+  .rings{position:relative;height:46px;margin:0 auto 6px;width:96px}
+  .rings span{position:absolute;width:34px;height:34px;border:5px solid;border-radius:50%}
+  .rings span:nth-child(1){border-color:var(--ring-blue);left:0;top:0}
+  .rings span:nth-child(2){border-color:var(--ring-black);left:30px;top:0}
+  .rings span:nth-child(3){border-color:var(--ring-red);left:60px;top:0}
+  .rings span:nth-child(4){border-color:var(--ring-yellow);left:15px;top:18px}
+  .rings span:nth-child(5){border-color:var(--ring-green);left:45px;top:18px}
+  .hero .ico{font-size:3rem;display:block;margin:4px 0 2px}
+  .hero h1{margin:2px 0 0;font-size:2rem;font-weight:800;color:var(--deep);
+    text-shadow:0 2px 0 #fff,0 4px 14px rgba(0,0,0,.12);line-height:1.05}
+  .hero .sub{margin:8px auto 0;max-width:540px;font-size:.96rem;color:#125a7e;font-weight:500}
+  .ribbon{display:inline-block;margin:14px 0 4px;padding:7px 18px;border-radius:30px;
+    background:linear-gradient(110deg,var(--aqua),var(--aqua-lt));color:#fff;
+    font-size:.82rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    box-shadow:0 5px 16px rgba(10,145,196,.35)}
+
+  .karma{display:inline-block;margin:12px auto 0;max-width:560px;padding:11px 18px;
+    border-radius:16px;font-size:.86rem;font-weight:600;line-height:1.45;color:#7a5c10;
+    background:linear-gradient(110deg,#fffbe9,#fdf3c8);border:1px solid #f0e3a8;
+    box-shadow:0 5px 16px rgba(212,175,55,.25)}
+
+  .wrap{max-width:900px;margin:0 auto;padding:10px 16px 60px}
+
+  /* ===== SECTION HEADERS ===== */
+  .sec-head{display:flex;align-items:center;gap:12px;margin:30px 4px 14px}
+  .sec-head .num{flex:0 0 auto;width:40px;height:40px;border-radius:50%;display:grid;
+    place-items:center;font-size:1.3rem;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+  .sec-head h2{margin:0;font-size:1.4rem;font-weight:800;line-height:1.1}
+  .sec-head p{margin:2px 0 0;font-size:.82rem;font-weight:600;opacity:.7}
+  .dance .num{background:linear-gradient(135deg,#e60012,#ff5a76)}
+  .dance h2{color:#b00010}
+  .pool .num{background:linear-gradient(135deg,var(--aqua),var(--aqua-lt))}
+  .pool h2{color:var(--deep)}
+  .arc .num{background:linear-gradient(135deg,var(--neon-purple),var(--neon-pink))}
+  .arc h2{color:#5a1a8e}
+
+  /* ===== DANCE-OFF PANEL ===== */
+  .danceoff{background:linear-gradient(150deg,#e60012,#ff3d6e 55%,#8b2fff);
+    border-radius:24px;padding:22px 20px;color:#fff;text-align:center;position:relative;overflow:hidden;
+    box-shadow:0 14px 40px rgba(230,0,18,.32);border:1px solid rgba(255,255,255,.14)}
+  .danceoff .d-emoji{font-size:2.6rem;display:block;line-height:1;margin-bottom:8px}
+  .danceoff .d-lead{margin:0 auto;max-width:560px;font-size:.96rem;font-weight:500;line-height:1.5;
+    text-shadow:0 1px 6px rgba(0,0,0,.18)}
+  .danceoff .d-note{display:inline-block;margin:14px auto 0;padding:8px 16px;border-radius:30px;
+    background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);
+    font-size:.82rem;font-weight:700}
+
+  /* ===== POOL EVENT CARDS ===== */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .event{position:relative;background:var(--paper);border-radius:20px;overflow:hidden;
+    box-shadow:0 8px 24px rgba(6,59,99,.16);border:1px solid #d7eefa;
+    transition:transform .2s,box-shadow .2s;cursor:pointer;display:flex;flex-direction:column}
+  .event:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(6,59,99,.24)}
+  .event .e-top{padding:16px 16px 12px;color:#fff;position:relative;overflow:hidden;
+    background:linear-gradient(125deg,var(--aqua),var(--aqua-lt))}
+  .event .e-top::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 82% -12%,rgba(255,255,255,.35),transparent 60%)}
+  .event .e-emoji{font-size:2.2rem;display:block;line-height:1}
+  .event .e-name{font-size:1.12rem;font-weight:800;margin:6px 0 0}
+  .event .e-body{padding:13px 15px 16px;flex:1;display:flex;flex-direction:column;gap:9px}
+  .event .e-desc{font-size:.9rem;color:#34536a;line-height:1.45}
+  .event .e-medal{margin-top:auto;display:flex;align-items:center;gap:7px;
+    background:linear-gradient(110deg,#fffbe9,#fdf3c8);border:1px solid #f0e3a8;
+    border-radius:11px;padding:8px 11px;font-size:.82rem;font-weight:700;color:#7a5c10}
+  .event .e-medal .m{font-size:1.1rem}
+
+  /* ===== ARCADE PANEL ===== */
+  .arcade{background:linear-gradient(160deg,#1a0b2e,#2a1052 60%,#3a0e44);
+    border-radius:24px;padding:22px 20px 24px;color:#f3e9ff;position:relative;overflow:hidden;
+    box-shadow:0 14px 40px rgba(60,15,90,.4);border:1px solid rgba(255,255,255,.08)}
+  .arcade::before{content:"";position:absolute;inset:0;opacity:.5;
+    background:
+      repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.025) 3px 4px);
+    pointer-events:none}
+  .arcade .neon{font-size:1.5rem;font-weight:800;letter-spacing:1px;margin:0 0 4px;
+    color:#fff;text-shadow:0 0 8px var(--neon-cyan),0 0 18px var(--neon-pink)}
+  .arcade .where{font-size:.88rem;color:#c9b8ec;margin:0 0 16px;line-height:1.5}
+  .arcade .where a{color:var(--neon-cyan);font-weight:700;text-decoration:none}
+  .arcade .where a:hover{text-decoration:underline}
+
+  .facts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+  .fact{flex:1 1 130px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;padding:11px 12px;text-align:center}
+  .fact .big{display:block;font-size:1.45rem;font-weight:800;color:var(--neon-cyan);line-height:1}
+  .fact .lbl{font-size:.72rem;color:#cdbdf0;font-weight:600;margin-top:3px;display:block}
+
+  .arcade h3{font-size:.86rem;text-transform:uppercase;letter-spacing:1.5px;color:#e6b6ff;
+    margin:6px 0 10px}
+  .games{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;margin:0 0 6px}
+  .game{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:12px;
+    padding:9px 11px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:.85rem;
+    cursor:pointer;transition:transform .15s,background .15s}
+  .game:hover{transform:translateY(-3px);background:rgba(255,46,136,.22);
+    box-shadow:0 0 14px rgba(255,46,136,.4)}
+  .game .g-e{font-size:1.15rem}
+  .game .star{margin-left:auto;font-size:.7rem;color:#ffd86b;opacity:0;transition:opacity .15s}
+  .game.fav .star{opacity:1}
+  .gold-note{display:flex;align-items:center;gap:8px;margin-top:16px;
+    background:linear-gradient(110deg,rgba(212,175,55,.22),rgba(243,223,155,.12));
+    border:1px solid rgba(212,175,55,.4);border-radius:13px;padding:10px 13px;
+    font-size:.86rem;font-weight:700;color:#ffe9a8}
+
+  footer{text-align:center;color:#1f6184;font-size:.78rem;padding:26px 16px 40px;line-height:1.6}
+  footer .r{font-size:1rem;letter-spacing:-4px;display:block;margin-bottom:6px;opacity:.85}
+
+  @media(max-width:520px){
+    .hero h1{font-size:1.65rem}
+    .grid{grid-template-columns:1fr;gap:12px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <a class="back" href="index.html">← All Games</a>
+  <div class="rings"><span></span><span></span><span></span><span></span><span></span></div>
+  <span class="ico">🕹️</span>
+  <h1>Games Day</h1>
+  <p class="sub">From the pool to the pixels. Morning belongs to the <b>Pool Olympics</b> — then we trade chlorine for joysticks and go full retro at <b>Reclaim Arcade</b>. Tap any card to dive in.</p>
+  <div class="ribbon">🏊 Splash &amp; Smash 🕹️</div>
+  <div class="karma">⚖️ Medals are awarded <b>arbitrarily</b>, based entirely on accrued <b>Karma</b>. Be excellent to each other.</div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== DANCE-OFF ===== -->
+  <div class="sec-head dance">
+    <div class="num">1</div>
+    <div>
+      <h2>💃 Nintendo Switch Dance-off</h2>
+      <p>First thing in the morning · shake out the sleepies</p>
+    </div>
+  </div>
+
+  <section class="danceoff">
+    <span class="d-emoji">🕺🪩💃</span>
+    <p class="d-lead">We kick off Games Day on the Switch. Pick your songs, strike your poses, and dance like the medals depend on it (they don't — that's Karma's job).</p>
+    <p class="d-note">🎮 Joy-Cons up · 🔥 Highest-energy performer sets the tone for the day</p>
+  </section>
+
+  <!-- ===== POOL OLYMPICS ===== -->
+  <div class="sec-head pool">
+    <div class="num">2</div>
+    <div>
+      <h2>🏊 Pool Olympics</h2>
+      <p>Four aquatic events · medals on the line</p>
+    </div>
+  </div>
+
+  <div class="grid" id="poolGrid"></div>
+
+  <!-- ===== RECLAIM ARCADE ===== -->
+  <div class="sec-head arc">
+    <div class="num">3</div>
+    <div>
+      <h2>🕹️ Reclaim Arcade</h2>
+      <p>4:00 PM · Retro gaming · all games on free play</p>
+    </div>
+  </div>
+
+  <section class="arcade">
+    <p class="neon">▶ INSERT COIN</p>
+    <p class="where">Step in through the old-school video store and back into the '80s &amp; '90s.
+      <a href="https://reclaimarcade.com/" target="_blank" rel="noopener">2324 Plank Rd, Fredericksburg, VA →</a></p>
+
+    <div class="facts">
+      <div class="fact"><span class="big">50+</span><span class="lbl">Arcade games</span></div>
+      <div class="fact"><span class="big">19</span><span class="lbl">Pinball machines</span></div>
+      <div class="fact"><span class="big">FREE</span><span class="lbl">Play, all day</span></div>
+      <div class="fact"><span class="big">∞</span><span class="lbl">High scores to chase</span></div>
+    </div>
+
+    <h3>★ Tap the games you want to hit</h3>
+    <div class="games" id="gameList"></div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="r">🥇 🥈 🥉</span>
+  Games Day · Thursday, June 18 · Cousin Camp 2026
+</footer>
+
+<script>
+/* ---------- POOL EVENTS ---------- */
+const EVENTS = [
+  {e:"🤽", n:"Synchronized Swimming", d:"Two Olympians team up to choreograph a 1-minute routine, then perform it for the judges. Make a splash with your moves!",
+    medal:"Top routine — rated by judges August &amp; Daphne"},
+  {e:"🌍", n:"Name That Country", d:"Each swimmer grabs a floating letter, then the team works together to arrange themselves and spell out the name of a country.",
+    medal:"Country spelled correctly"},
+  {e:"💦", n:"Cannonball Cavalcade", d:"One by one, each Olympian launches into the deep end with their own signature super-splashy trick. Biggest, boldest splash takes it.",
+    medal:"Most epic splash"},
+  {e:"🐠", n:"Aquatic Animals", d:"Each person names an animal, then every Olympian swims one lap impersonating it. Winner isn't the fastest — it's the most convincing animal re-enactor.",
+    medal:"Most convincing animal"}
+];
+
+const poolGrid = document.getElementById("poolGrid");
+EVENTS.forEach(ev=>{
+  const c = document.createElement("div");
+  c.className = "event";
+  c.innerHTML = `
+    <div class="e-top">
+      <span class="e-emoji">${ev.e}</span>
+      <div class="e-name">${ev.n}</div>
+    </div>
+    <div class="e-body">
+      <div class="e-desc">${ev.d}</div>
+    </div>`;
+  poolGrid.appendChild(c);
+});
+
+/* ---------- ARCADE GAMES (real Reclaim titles) ---------- */
+const GAMES = [
+  {e:"🏃", n:"Track &amp; Field"},{e:"🔫", n:"Time Crisis"},{e:"🐢", n:"TMNT"},
+  {e:"🥋", n:"Double Dragon"},{e:"🦸", n:"X-Men"},{e:"📰", n:"Paperboy"},
+  {e:"🍺", n:"Tapper"},{e:"⚔️", n:"Joust"},{e:"👻", n:"Ghosts 'n Goblins"},
+  {e:"🕹️", n:"Pinball ×19"}
+];
+
+const gameList = document.getElementById("gameList");
+GAMES.forEach(g=>{
+  const el = document.createElement("div");
+  el.className = "game";
+  el.innerHTML = `<span class="g-e">${g.e}</span><span>${g.n}</span><span class="star">★ PICKED</span>`;
+  el.addEventListener("click",()=>el.classList.toggle("fav"));
+  gameList.appendChild(el);
+});
+</script>
+</body>
+</html>
